@@ -782,3 +782,53 @@ Actions Taken:
 * Ran `npm run build`, workspace diagnostics, browser flow verification, and API health checks
 * Removed the temporary account created for UI verification
 * Committed UI restoration as b8568205047b76bafcc86f2498608516703d5de6
+
+================================================================================
+[2026-10-06T05:04:41+05:30] Add Login-Page Demo Autofill Option
+================================================================================
+User Prompt (verbatim):
+give an option in login page to auto fill the details
+
+Agent Response:
+I’ll add a visible demo-autofill option on the sign-in screen. It will fill the registration/profile form with clearly labeled sample values and a unique example email, without creating an account or changing backend behavior.
+
+Agent Response Summary:
+The existing login page combines sign-in and registration modes. I’m adding one-click sample profile autofill that switches to account creation, allowing the user to review or edit all fields before submitting.
+
+Commit SHA:
+Pending implementation and verification.
+
+Files Modified / Created:
+* docs/logs.txt (Modified)
+
+Actions Taken:
+* Read the workspace contract, current architecture notes, recent activity log, team metadata, and account form implementation
+* Confirmed the previous UI restoration is committed and the worktree is clean before this request
+
+================================================================================
+[2026-10-06T05:05:43+05:30] Demo Autofill Option Verification
+================================================================================
+User Prompt (verbatim):
+give an option in login page to auto fill the details
+
+Agent Response:
+Added a visible “Fill demo details” button to the sign-in page. Selecting it switches to account creation and fills all registration/profile inputs with illustrative sample values, including a unique `example.test` email and a demo-only password. The form remains editable and is not submitted automatically; the API/backend behavior is unchanged.
+
+Validation passed: `npm run build`, diagnostics on the changed auth component, and browser verification that the button reveals the complete pre-filled registration form.
+
+Agent Response Summary:
+Added a clear, one-click demo autofill option that prepares an editable new-account form without submitting credentials or changing backend behavior. Verified the build and interacted with the login page in the browser.
+
+Commit SHA:
+3433eab7587447640461335693b15cfd5ee23d46
+
+Files Modified / Created:
+* docs/logs.txt (Modified)
+* src/components/AuthPages.jsx (Modified)
+
+Actions Taken:
+* Added sample registration values with a timestamp-unique example email
+* Added the “Fill demo details” control and clarified that values are samples requiring review before submission
+* Ran `npm run build` and confirmed no workspace diagnostics
+* Verified the button in the browser and confirmed all account/profile fields populate without submitting
+* Committed as 3433eab7587447640461335693b15cfd5ee23d46
