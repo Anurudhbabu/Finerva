@@ -16,6 +16,22 @@ const initialProfile = {
   riskPreference: 'balanced'
 };
 
+function demoProfile() {
+  return {
+    name: 'Finerva Demo User',
+    email: `demo-${Date.now()}@example.test`,
+    password: 'Finerva-Demo-2026!',
+    monthlyIncome: '4200',
+    currentSavings: '8500',
+    monthlyExpenses: '2100',
+    savingsGoal: '600',
+    debtBalance: '0',
+    currency: 'USD',
+    occupation: 'Student',
+    riskPreference: 'balanced'
+  };
+}
+
 function Brand() {
   return (
     <Link to="/login" className="flex items-center gap-3" aria-label="Finerva home">
@@ -79,6 +95,12 @@ export function UserAuthPage({ onAuthenticated, startupError = '' }) {
 
   const update = (event) => setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
 
+  const autofillDemo = () => {
+    setForm(demoProfile());
+    setMode('register');
+    setError('');
+  };
+
   const submit = async (event) => {
     event.preventDefault();
     setBusy(true);
@@ -106,6 +128,17 @@ export function UserAuthPage({ onAuthenticated, startupError = '' }) {
             </button>
           ))}
         </div>
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
+          <span className="text-xs text-slate-500">Want to explore the app first?</span>
+          <button
+            type="button"
+            onClick={autofillDemo}
+            className="rounded-lg border border-emerald-400/25 bg-emerald-400/5 px-3 py-2 text-xs font-semibold text-emerald-200 transition hover:border-emerald-300/50 hover:bg-emerald-400/10"
+          >
+            Fill demo details
+          </button>
+        </div>
+        <p className="mt-2 text-[11px] leading-5 text-slate-500">Sample values only. Review or edit them before creating an account; this does not submit the form.</p>
         <form onSubmit={submit} className="mt-5 space-y-4">
           {startupError && <p role="alert" className="rounded-xl border border-amber-400/20 bg-amber-400/10 px-3.5 py-3 text-sm text-amber-100">{startupError}</p>}
           {registering && (
