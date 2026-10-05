@@ -230,25 +230,6 @@ function SiteHeader({ sky, querySky, setPreview, onNotice }) {
   );
 }
 
-function SkyCard({ sky, querySky, setPreview, dashboard = false }) {
-  return (
-    <div className={`sky-card${dashboard ? " sky-card-dashboard" : ""}`}>
-      <SkyArtwork sky={sky} />
-      <div className="sky-card-top">
-        <span className="live-dot"><span /> {dashboard ? "RIGHT NOW" : "A LITTLE CONTEXT"}</span>
-        <SkyControl sky={sky} querySky={querySky} setPreview={setPreview} compact />
-      </div>
-      <div className="sky-card-caption">
-        <span className="sky-caption-icon" aria-hidden="true">{sky === "night" ? <Moon size={17} /> : sky === "afternoon" ? <Sun size={17} /> : <Sparkles size={17} />}</span>
-        <div>
-          <span className="sky-caption-overline">{skyNames[sky]} light, clear head</span>
-          <strong>{sky === "morning" ? "Start with one good decision." : sky === "afternoon" ? "Keep your plans in view." : sky === "evening" ? "A little clarity goes a long way." : "Tomorrow can wait. You're on track."}</strong>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function FeatureCard({ feature, index }) {
   const Icon = feature.icon;
   return (
@@ -296,11 +277,6 @@ function LandingPage({ sky, querySky, setPreview, onNotice }) {
               <div><span className="stat-value">24/7</span><span className="stat-label">here when questions come up</span></div>
               <div><span className="stat-value">100%</span><span className="stat-label">focused on your next step</span></div>
             </div>
-          </div>
-          <div className="hero-scene-wrap">
-            <div className="scene-index"><span>01</span> YOUR DAY, IN A BETTER BALANCE</div>
-            <SkyCard sky={sky} querySky={querySky} setPreview={setPreview} />
-            <div className="scene-footnote"><span>01</span> Good decisions start small <span className="footnote-rule" /></div>
           </div>
         </section>
 
@@ -429,7 +405,6 @@ function DashboardPage({ sky, querySky, setPreview, onNotice }) {
             <p className="dashboard-welcome">Welcome back, {profile.userName}! Here's your financial overview</p>
             <div className="dashboard-sample-note"><LockKeyhole size={13} aria-hidden="true" /> A sample view. Your finances aren’t connected.</div>
           </div>
-          <SkyCard sky={sky} querySky={querySky} setPreview={setPreview} dashboard />
           <div className="hero-decoration hero-decoration-one" aria-hidden="true" />
           <div className="hero-decoration hero-decoration-two" aria-hidden="true" />
         </section>
@@ -590,6 +565,7 @@ export default function App() {
 
   return (
     <div className="app-shell" data-sky={sky}>
+      <SkyArtwork sky={sky} className="ambient-background" />
       <Routes>
         <Route path="/" element={<LandingPage sky={sky} querySky={querySky} setPreview={setPreview} onNotice={setNotice} />} />
         <Route path="/dashboard" element={<DashboardPage sky={sky} querySky={querySky} setPreview={setPreview} onNotice={setNotice} />} />
