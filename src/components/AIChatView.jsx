@@ -2,33 +2,26 @@ import React, { useState, useRef, useEffect } from 'react';
 import { 
   Bot, 
   Send, 
-  Sparkles, 
-  Cpu, 
-  ShieldAlert, 
   CheckCircle2, 
-  RotateCcw, 
-  Zap, 
   User, 
   Copy, 
   Check,
   ChevronRight
 } from 'lucide-react';
-import { aiEngine } from '../services/aiAdvisor';
+import { api } from '../services/api';
 
-export const AIChatView = ({ user, transactions }) => {
+export const AIChatView = ({ user, token }) => {
   const [messages, setMessages] = useState([
     {
       id: 'welcome-msg',
       sender: 'ai',
-      modelUsed: 'Gemini 2.5 Pro (Primary Financial AI)',
-      source: 'GEMINI',
-      category: 'Finerva Advisory Core',
-      text: `Hello **${user.name}**! I am **Finerva AI**, your personal autonomous finance companion. 
-I have analyzed your balance ($24,850.40) and recent recurring expenditures. How can I optimize your wealth, budgeting, or investments today?`,
+      modelUsed: 'Finerva local financial assistant',
+      source: 'FINERVA API',
+      category: 'Finerva Advisory',
+      text: `Hello ${user.name.split(' ')[0]}! Ask me about budgeting, savings, or debt. Replies use the financial details you entered in your profile.`,
       actionItems: [
-        'Review your monthly 50/30/20 budget allocation',
-        'Simulate high-yield emergency fund accumulation',
-        'Explore student/developer discounts to cut software overhead'
+        'Check that your income and expense details are current',
+        'Choose a monthly savings goal that fits your priorities'
       ],
       timestamp: 'Just now'
     }
@@ -36,7 +29,6 @@ I have analyzed your balance ($24,850.40) and recent recurring expenditures. How
 
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [activeEngine, setActiveEngine] = useState('gemini'); // 'gemini' | 'granite'
   const [copiedId, setCopiedId] = useState(null);
   const messagesEndRef = useRef(null);
 
@@ -71,11 +63,7 @@ I have analyzed your balance ($24,850.40) and recent recurring expenditures. How
     setIsTyping(true);
 
     try {
-      aiEngine.setEngine(activeEngine);
-      const aiResponse = await aiEngine.generateFinancialAdvice(query, user, {
-        monthlySurplus: 1800,
-        transactionsCount: transactions.length
-      });
+      const aiResponse = await api.chat(query, token);
 
       setMessages(prev => [
         ...prev,
@@ -96,11 +84,11 @@ I have analyzed your balance ($24,850.40) and recent recurring expenditures. How
         {
           id: 'err-' + Date.now(),
           sender: 'ai',
-          modelUsed: 'Rule-Based Emergency Core',
-          source: 'FALLBACK',
-          category: 'Emergency Response',
-          text: 'Dual-AI was unable to reach remote compute. Rule fallback suggests keeping fixed expenses below 50% and maintaining 6 months of emergency reserves.',
-          actionItems: ['Verify internet connection', 'Retry query in a moment'],
+          modelUsed: 'Finerva API',
+          source: 'ERROR',
+          category: 'Connection error',
+          text: `The Finerva API request failed: ${err.message}. Check that the backend service is running, then retry.`,
+          actionItems: [],
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ]);
@@ -126,42 +114,17 @@ I have analyzed your balance ($24,850.40) and recent recurring expenditures. How
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-bold text-white">Finerva Dual-AI Advisor</h2>
+              <h2 className="text-base font-bold text-white">Finerva Financial Assistant</h2>
               <span className="flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/20">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 Live
               </span>
             </div>
-            <p className="text-xs text-slate-400">Context-aware personal finance reasoning engine</p>
+            <p className="text-xs text-slate-400">Connected to your profile through the Finerva API</p>
           </div>
         </div>
 
-        {/* Engine Switcher */}
-        <div className="flex items-center gap-2 bg-slate-900/90 p-1 rounded-xl border border-slate-800 text-xs">
-          <button
-            onClick={() => setActiveEngine('gemini')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-all ${
-              activeEngine === 'gemini'
-                ? 'bg-emerald-500 text-slate-950 font-bold shadow-sm'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Gemini 2.5 Pro</span>
-          </button>
-
-          <button
-            onClick={() => setActiveEngine('granite')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-all ${
-              activeEngine === 'granite'
-                ? 'bg-teal-500 text-slate-950 font-bold shadow-sm'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <Cpu className="w-3.5 h-3.5" />
-            <span>IBM Granite Fallback</span>
-          </button>
-        </div>
+        <span className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-300">Profile-aware · Local API</span>
       </div>
 
       {/* Messages Scrollable Area */}
@@ -246,7 +209,7 @@ I have analyzed your balance ($24,850.40) and recent recurring expenditures. How
               <span className="h-2 w-2 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: '0ms' }} />
               <span className="h-2 w-2 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: '150ms' }} />
               <span className="h-2 w-2 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: '300ms' }} />
-              <span className="text-xs text-slate-400 ml-1">Analyzing financial trajectory...</span>
+              <span className="text-xs text-slate-400 ml-1">Preparing a profile-aware reply…</span>
             </div>
           </div>
         )}

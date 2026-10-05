@@ -80,3 +80,22 @@ All 4 team members can work simultaneously across separate laptops:
 ---
 
 *Build freely. Use AI freely. Secure what you build. Document what you claim. Prove what you implemented.*
+
+---
+
+## Run Finerva locally
+
+The current demo uses a React/Vite frontend and a local Node API. From the repository root:
+
+```powershell
+npm install
+npm run dev:all
+```
+
+Open the local URL printed by Vite (normally `http://localhost:5000`; if that port is occupied, Vite may select another). The combined command starts both services, and Vite forwards `/api` requests to the API on port `5174`.
+
+Create an account at `/login`. Registration asks for your name, email, password, currency, monthly income, current savings, monthly expenses, savings goal, debt balance, occupation, and risk preference. The demo stores profile and finance data in `src/backend/data.json`; do not enter real account credentials or payment-card details.
+
+The separate administrator sign-in is `/admin/login`. For a local demo, the default credentials are `admin@finerva.local` / `FinervaAdmin!2026`. Set a private `FINERVA_ADMIN_PASSWORD` environment variable before sharing the service. This prototype stores financial data in plain local JSON and uses in-memory sessions. It is not production-ready and must not be exposed publicly without stronger storage, session, transport, and operational controls.
+
+The assistant uses local rule-based guidance based on the profile you save. It does not connect to a bank or an external AI service, and its output is educational rather than financial advice.

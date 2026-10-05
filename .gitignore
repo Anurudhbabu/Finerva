@@ -21,3 +21,5 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+src/backend/data.json
+src/backend/data.json.tmp

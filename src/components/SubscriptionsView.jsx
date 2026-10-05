@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Repeat, 
   Plus, 
@@ -10,7 +10,7 @@ import {
   ShieldAlert 
 } from 'lucide-react';
 
-export const SubscriptionsView = ({ subscriptions, onUpdateSubscriptions }) => {
+export const SubscriptionsView = ({ subscriptions, onUpdateSubscriptions, user }) => {
   const [subList, setSubList] = useState(subscriptions);
   const [showModal, setShowModal] = useState(false);
   const [name, setName] = useState('');
@@ -19,9 +19,19 @@ export const SubscriptionsView = ({ subscriptions, onUpdateSubscriptions }) => {
 
   const monthlyTotal = subList.reduce((acc, s) => acc + s.cost, 0);
   const annualTotal = monthlyTotal * 12;
+  const potentialAnnualSavings = subList.filter((subscription) => subscription.status.includes('Flagged')).reduce((total, subscription) => total + subscription.cost * 12, 0);
+  const money = (amount) => new Intl.NumberFormat(undefined, {
+    style: 'currency',
+    currency: user?.currency || 'USD',
+    maximumFractionDigits: 2
+  }).format(amount);
+
+  useEffect(() => setSubList(subscriptions), [subscriptions]);
 
   const handleRemove = (id) => {
-    setSubList(prev => prev.filter(s => s.id !== id));
+    const nextSubscriptions = subList.filter(s => s.id !== id);
+    setSubList(nextSubscriptions);
+    onUpdateSubscriptions(nextSubscriptions);
   };
 
   const handleAdd = (e) => {
@@ -36,7 +46,9 @@ export const SubscriptionsView = ({ subscriptions, onUpdateSubscriptions }) => {
       category,
       status: 'Active'
     };
-    setSubList(prev => [...prev, newSub]);
+    const nextSubscriptions = [...subList, newSub];
+    setSubList(nextSubscriptions);
+    onUpdateSubscriptions(nextSubscriptions);
     setShowModal(false);
     setName('');
     setCost('');
@@ -65,20 +77,20 @@ export const SubscriptionsView = ({ subscriptions, onUpdateSubscriptions }) => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="glass-panel p-5 rounded-2xl border border-slate-800/80">
           <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Monthly Burn</span>
-          <p className="text-2xl font-black text-white mt-1">${monthlyTotal.toFixed(2)}</p>
+          <p className="text-2xl font-black text-white mt-1">{money(monthlyTotal)}</p>
           <p className="text-xs text-slate-400 mt-1">{subList.length} active service commitments</p>
         </div>
 
         <div className="glass-panel p-5 rounded-2xl border border-slate-800/80">
           <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Annual Run-Rate</span>
-          <p className="text-2xl font-black text-rose-400 mt-1">${annualTotal.toFixed(2)}</p>
+          <p className="text-2xl font-black text-rose-400 mt-1">{money(annualTotal)}</p>
           <p className="text-xs text-slate-400 mt-1">Projected 12-month drain on savings</p>
         </div>
 
         <div className="glass-panel p-5 rounded-2xl border border-emerald-500/20 bg-emerald-950/10">
           <span className="text-xs font-semibold uppercase tracking-wider text-emerald-400">Potential Savings</span>
-          <p className="text-2xl font-black text-emerald-400 mt-1">$179.88 <span className="text-xs font-normal text-slate-300">/ yr</span></p>
-          <p className="text-xs text-slate-400 mt-1">By canceling 1 flagged unused subscription</p>
+          <p className="text-2xl font-black text-emerald-400 mt-1">{money(potentialAnnualSavings)} <span className="text-xs font-normal text-slate-300">/ yr</span></p>
+          <p className="text-xs text-slate-400 mt-1">Estimated from subscriptions you flag for review</p>
         </div>
       </div>
 
@@ -127,7 +139,7 @@ export const SubscriptionsView = ({ subscriptions, onUpdateSubscriptions }) => {
 
                 <div className="flex items-center justify-between sm:justify-end gap-5">
                   <div className="text-right">
-                    <p className="text-sm font-extrabold text-white">${sub.cost.toFixed(2)}</p>
+                    <p className="text-sm font-extrabold text-white">{money(sub.cost)}</p>
                     <p className="text-[11px] text-slate-400 capitalize">{sub.billingCycle}</p>
                   </div>
 
@@ -142,6 +154,7 @@ export const SubscriptionsView = ({ subscriptions, onUpdateSubscriptions }) => {
               </div>
             );
           })}
+          {subList.length === 0 && <p className="rounded-xl border border-dashed border-slate-700 p-6 text-center text-sm text-slate-400">No subscriptions recorded. Add recurring services to track their costs.</p>}
         </div>
       </div>
 
@@ -164,7 +177,7 @@ export const SubscriptionsView = ({ subscriptions, onUpdateSubscriptions }) => {
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1">Monthly Cost ($)</label>
+                <label className="text-xs font-semibold text-slate-300 block mb-1">Monthly Cost ({user?.currency || 'USD'})</label>
                 <input 
                   type="number" 
                   step="0.01"

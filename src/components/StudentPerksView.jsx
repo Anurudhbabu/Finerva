@@ -21,7 +21,7 @@ export const StudentPerksView = () => {
             <span>Curated Student & Young Professional Tier</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Student Offers & Financial Aid</h1>
-          <p className="text-sm text-slate-400 mt-1">Unlock over $3,500+ in verified software subscriptions, high-yield bank perks, and cloud grants</p>
+          <p className="text-sm text-slate-400 mt-1">Example software discounts and education offers; check each provider for current eligibility and terms.</p>
         </div>
       </div>
 

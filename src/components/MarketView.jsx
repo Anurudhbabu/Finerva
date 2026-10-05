@@ -33,8 +33,8 @@ export const MarketView = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Live Market Watchlist & Asset Pulse</h1>
-          <p className="text-sm text-slate-400 mt-1">Real-time valuation metrics, index performance, and tech sector trends</p>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Market Watchlist & Asset Pulse</h1>
+          <p className="text-sm text-slate-400 mt-1">Sample market values for interface preview only; quotes are not live.</p>
         </div>
 
         {/* Search */}
@@ -90,7 +90,7 @@ export const MarketView = () => {
       <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800/80">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-base font-bold text-white">Tracked Securities</h2>
-          <span className="text-xs text-slate-400">Auto-refresh: 15s</span>
+          <span className="text-xs text-slate-400">Sample data · no auto-refresh</span>
         </div>
 
         <div className="overflow-x-auto">

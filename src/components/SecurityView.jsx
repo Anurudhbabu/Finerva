@@ -12,7 +12,6 @@ import {
 } from 'lucide-react';
 
 export const SecurityView = ({ user, transactions, budgets, goals }) => {
-  const [encryptionStatus, setEncryptionStatus] = useState('Active (AES-256 Client-Side)');
   const [downloadSuccess, setDownloadSuccess] = useState(false);
 
   const handleExportData = () => {
@@ -65,52 +64,52 @@ export const SecurityView = ({ user, transactions, budgets, goals }) => {
       {downloadSuccess && (
         <div className="p-4 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-2 animate-fadeIn">
           <CheckCircle className="w-4 h-4" />
-          <span>Audit package generated and downloaded successfully with SHA-256 verification hash.</span>
+          <span>Audit package generated and downloaded successfully.</span>
         </div>
       )}
 
       {/* Security Architecture Posture Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
-        {/* Isolation */}
+        {/* API boundary */}
         <div className="glass-panel p-6 rounded-3xl border border-slate-800/80 space-y-3">
           <div className="p-3 rounded-2xl bg-emerald-500/10 text-emerald-400 w-fit">
             <Lock className="w-5 h-5" />
           </div>
-          <h3 className="text-base font-bold text-white">Zero Third-Party Telemetry</h3>
+          <h3 className="text-base font-bold text-white">Local Finerva API</h3>
           <p className="text-xs text-slate-400 leading-relaxed">
-            All transaction ledgers and financial balances are isolated strictly within your authenticated session. No analytics or ad trackers are loaded.
+            The demo frontend sends profile and finance data to the local API using a session token. No bank accounts are connected.
           </p>
           <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-400">
-            <CheckCircle className="w-3.5 h-3.5" /> Enforced at Gateway
+            <CheckCircle className="w-3.5 h-3.5" /> Authenticated API
           </span>
         </div>
 
-        {/* Cryptography */}
+        {/* Password storage */}
         <div className="glass-panel p-6 rounded-3xl border border-slate-800/80 space-y-3">
           <div className="p-3 rounded-2xl bg-blue-500/10 text-blue-400 w-fit">
             <Key className="w-5 h-5" />
           </div>
-          <h3 className="text-base font-bold text-white">Client-Side Encryption</h3>
+          <h3 className="text-base font-bold text-white">Password protection</h3>
           <p className="text-xs text-slate-400 leading-relaxed">
-            Sensitive user fields and transaction notes are protected using browser-native WebCrypto primitives with randomized IV vectors.
+            Account passwords are salted and hashed by the backend. Demo profile and finance data are stored in a local JSON file and are not encrypted at rest.
           </p>
           <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-blue-400">
-            <CheckCircle className="w-3.5 h-3.5" /> AES-GCM 256-Bit
+            <CheckCircle className="w-3.5 h-3.5" /> Scrypt password hashes
           </span>
         </div>
 
-        {/* Dual AI Sandbox */}
+        {/* Local assistant */}
         <div className="glass-panel p-6 rounded-3xl border border-slate-800/80 space-y-3">
           <div className="p-3 rounded-2xl bg-purple-500/10 text-purple-400 w-fit">
             <Terminal className="w-5 h-5" />
           </div>
-          <h3 className="text-base font-bold text-white">Sandboxed Dual AI</h3>
+          <h3 className="text-base font-bold text-white">Profile-aware assistant</h3>
           <p className="text-xs text-slate-400 leading-relaxed">
-            AI inferences utilize sanitized token context. Personally identifiable banking numbers and credential secrets are redacted prior to inference.
+            The local rule-based assistant receives your profile values to answer budgeting questions. Avoid entering bank credentials or payment-card details.
           </p>
           <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-purple-400">
-            <CheckCircle className="w-3.5 h-3.5" /> Zero Data Retention
+            <CheckCircle className="w-3.5 h-3.5" /> No external AI service
           </span>
         </div>
 

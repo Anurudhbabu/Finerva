@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   PieChart, 
   Plus, 
@@ -9,7 +9,7 @@ import {
   ShieldCheck
 } from 'lucide-react';
 
-export const BudgetView = ({ budgets, onUpdateBudget }) => {
+export const BudgetView = ({ budgets, onUpdateBudget, user }) => {
   const [budgetList, setBudgetList] = useState(budgets);
   const [showModal, setShowModal] = useState(false);
   const [newCategory, setNewCategory] = useState('');
@@ -18,6 +18,11 @@ export const BudgetView = ({ budgets, onUpdateBudget }) => {
   const totalAllocated = budgetList.reduce((acc, b) => acc + b.allocated, 0);
   const totalSpent = budgetList.reduce((acc, b) => acc + b.spent, 0);
   const remaining = totalAllocated - totalSpent;
+  const monthlyIncome = Number(user?.monthlyIncome || 0);
+  const currency = user?.currency || 'USD';
+  const money = (amount) => new Intl.NumberFormat(undefined, { style: 'currency', currency, maximumFractionDigits: 0 }).format(amount);
+
+  useEffect(() => setBudgetList(budgets), [budgets]);
 
   const handleAddBudget = (e) => {
     e.preventDefault();
@@ -29,7 +34,9 @@ export const BudgetView = ({ budgets, onUpdateBudget }) => {
       spent: 0,
       color: 'emerald'
     };
-    setBudgetList(prev => [...prev, item]);
+    const nextBudgets = [...budgetList, item];
+    setBudgetList(nextBudgets);
+    onUpdateBudget(nextBudgets);
     setShowModal(false);
     setNewCategory('');
     setNewAllocated('');
@@ -41,8 +48,8 @@ export const BudgetView = ({ budgets, onUpdateBudget }) => {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Smart Budgets & Spend Tracker</h1>
-          <p className="text-sm text-slate-400 mt-1">Autonomous monitoring aligned with the 50/30/20 wealth framework</p>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Budgets & Spend Tracker</h1>
+          <p className="text-sm text-slate-400 mt-1">Create category limits and compare them with the spending you enter.</p>
         </div>
 
         <button 
@@ -59,10 +66,10 @@ export const BudgetView = ({ budgets, onUpdateBudget }) => {
         <div className="glass-panel p-5 rounded-2xl border border-slate-800/80">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">Needs (50%)</span>
-            <span className="text-xs text-slate-400">Target: $3,250</span>
+            <span className="text-xs text-slate-400">Guide: {money(monthlyIncome * 0.5)}</span>
           </div>
-          <p className="text-xl font-black text-white mt-2">$2,195.40</p>
-          <p className="text-xs text-slate-400 mt-1">Rent, Utilities, Food & Core Commute</p>
+          <p className="text-xl font-black text-white mt-2">{money(0)}</p>
+          <p className="text-xs text-slate-400 mt-1">Guideline based on the income you entered</p>
           <div className="w-full bg-slate-900 rounded-full h-1.5 mt-3 overflow-hidden">
             <div className="bg-emerald-400 h-full rounded-full" style={{ width: '67%' }} />
           </div>
@@ -71,10 +78,10 @@ export const BudgetView = ({ budgets, onUpdateBudget }) => {
         <div className="glass-panel p-5 rounded-2xl border border-slate-800/80">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-blue-400">Wants (30%)</span>
-            <span className="text-xs text-slate-400">Target: $1,950</span>
+            <span className="text-xs text-slate-400">Guide: {money(monthlyIncome * 0.3)}</span>
           </div>
-          <p className="text-xl font-black text-white mt-2">$825.00</p>
-          <p className="text-xs text-slate-400 mt-1">Dining Out, Gadgets & Leisure</p>
+          <p className="text-xl font-black text-white mt-2">{money(0)}</p>
+          <p className="text-xs text-slate-400 mt-1">Enter budgets and spending to track this category</p>
           <div className="w-full bg-slate-900 rounded-full h-1.5 mt-3 overflow-hidden">
             <div className="bg-blue-400 h-full rounded-full" style={{ width: '42%' }} />
           </div>
@@ -83,10 +90,10 @@ export const BudgetView = ({ budgets, onUpdateBudget }) => {
         <div className="glass-panel p-5 rounded-2xl border border-slate-800/80">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-purple-400">Savings & Growth (20%)</span>
-            <span className="text-xs text-slate-400">Target: $1,300</span>
+            <span className="text-xs text-slate-400">Guide: {money(monthlyIncome * 0.2)}</span>
           </div>
-          <p className="text-xl font-black text-white mt-2">$1,800.00</p>
-          <p className="text-xs text-emerald-400 font-semibold mt-1">Exceeding baseline by +38%!</p>
+          <p className="text-xl font-black text-white mt-2">{money(0)}</p>
+          <p className="text-xs text-slate-400 font-semibold mt-1">Illustrative 50 / 30 / 20 budget guide</p>
           <div className="w-full bg-slate-900 rounded-full h-1.5 mt-3 overflow-hidden">
             <div className="bg-purple-400 h-full rounded-full" style={{ width: '100%' }} />
           </div>
@@ -98,7 +105,7 @@ export const BudgetView = ({ budgets, onUpdateBudget }) => {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-lg font-bold text-white">Monthly Category Allocations</h2>
-            <p className="text-xs text-slate-400">Remaining unallocated cushion: <strong className="text-emerald-400">${remaining.toLocaleString()}</strong></p>
+            <p className="text-xs text-slate-400">Remaining unallocated cushion: <strong className="text-emerald-400">{money(remaining)}</strong></p>
           </div>
         </div>
 
@@ -144,12 +151,13 @@ export const BudgetView = ({ budgets, onUpdateBudget }) => {
                 </div>
 
                 <div className="flex items-center justify-between text-xs text-slate-400">
-                  <span>Spent: <strong className="text-white">${item.spent.toLocaleString()}</strong></span>
-                  <span>Limit: <strong className="text-slate-200">${item.allocated.toLocaleString()}</strong></span>
+                  <span>Spent: <strong className="text-white">{money(item.spent)}</strong></span>
+                  <span>Limit: <strong className="text-slate-200">{money(item.allocated)}</strong></span>
                 </div>
               </div>
             );
           })}
+          {budgetList.length === 0 && <p className="col-span-full rounded-xl border border-dashed border-slate-700 p-6 text-center text-sm text-slate-400">You have not added category budgets yet. Create one to start tracking a limit.</p>}
         </div>
       </div>
 
@@ -172,7 +180,7 @@ export const BudgetView = ({ budgets, onUpdateBudget }) => {
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1">Monthly Limit ($)</label>
+                <label className="text-xs font-semibold text-slate-300 block mb-1">Monthly Limit ({currency})</label>
                 <input 
                   type="number" 
                   required

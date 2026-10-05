@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Target, 
   Plus, 
@@ -12,13 +12,20 @@ import {
   DollarSign
 } from 'lucide-react';
 
-export const GoalsView = ({ goals, onUpdateGoals }) => {
+export const GoalsView = ({ goals, onUpdateGoals, user }) => {
   const [goalList, setGoalList] = useState(goals);
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState('');
   const [target, setTarget] = useState('');
   const [deadline, setDeadline] = useState('');
   const [category, setCategory] = useState('Security');
+
+  useEffect(() => setGoalList(goals), [goals]);
+  const money = (amount) => new Intl.NumberFormat(undefined, {
+    style: 'currency',
+    currency: user?.currency || 'USD',
+    maximumFractionDigits: 0
+  }).format(amount);
 
   const getIcon = (cat) => {
     switch(cat) {
@@ -30,12 +37,14 @@ export const GoalsView = ({ goals, onUpdateGoals }) => {
   };
 
   const handleDeposit = (id, amount) => {
-    setGoalList(prev => prev.map(g => {
+    const nextGoals = goalList.map(g => {
       if (g.id === id) {
         return { ...g, current: Math.min(g.target, g.current + amount) };
       }
       return g;
-    }));
+    });
+    setGoalList(nextGoals);
+    onUpdateGoals(nextGoals);
   };
 
   const handleAddGoal = (e) => {
@@ -49,7 +58,9 @@ export const GoalsView = ({ goals, onUpdateGoals }) => {
       deadline: deadline || '2027',
       category
     };
-    setGoalList(prev => [...prev, newGoal]);
+    const nextGoals = [...goalList, newGoal];
+    setGoalList(nextGoals);
+    onUpdateGoals(nextGoals);
     setShowModal(false);
     setTitle('');
     setTarget('');
@@ -119,8 +130,8 @@ export const GoalsView = ({ goals, onUpdateGoals }) => {
                   />
                 </div>
                 <div className="flex items-center justify-between text-xs text-slate-400">
-                  <span>Saved: <strong className="text-white">${g.current.toLocaleString()}</strong></span>
-                  <span>Target: <strong className="text-slate-200">${g.target.toLocaleString()}</strong></span>
+                  <span>Saved: <strong className="text-white">{money(g.current)}</strong></span>
+                  <span>Target: <strong className="text-slate-200">{money(g.target)}</strong></span>
                 </div>
               </div>
 
@@ -133,20 +144,21 @@ export const GoalsView = ({ goals, onUpdateGoals }) => {
                     onClick={() => handleDeposit(g.id, 100)}
                     className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold disabled:opacity-40"
                   >
-                    +$100
+                    +{money(100)}
                   </button>
                   <button 
                     disabled={isComplete}
                     onClick={() => handleDeposit(g.id, 500)}
                     className="px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 text-xs font-semibold disabled:opacity-40"
                   >
-                    +$500
+                    +{money(500)}
                   </button>
                 </div>
               </div>
             </div>
           );
         })}
+        {goalList.length === 0 && <p className="col-span-full rounded-2xl border border-dashed border-slate-700 p-8 text-center text-sm text-slate-400">No savings goals yet. Add a goal to track progress toward something important to you.</p>}
       </div>
 
       {/* Add Goal Modal */}
@@ -168,7 +180,7 @@ export const GoalsView = ({ goals, onUpdateGoals }) => {
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1">Target Amount ($)</label>
+                <label className="text-xs font-semibold text-slate-300 block mb-1">Target Amount ({user?.currency || 'USD'})</label>
                 <input 
                   type="number" 
                   required

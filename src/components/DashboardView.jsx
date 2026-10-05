@@ -29,10 +29,17 @@ export const DashboardView = ({
   const [newCategory, setNewCategory] = useState('Food & Dining');
   const [newType, setNewType] = useState('debit');
 
-  const totalBalance = 24850.40;
-  const monthlySpend = transactions
-    .filter(t => t.type === 'debit')
-    .reduce((acc, t) => acc + t.amount, 0);
+  const totalBalance = Number(user.currentSavings || 0);
+  const monthlySpend = Number(user.monthlyExpenses || 0);
+  const monthlyIncome = Number(user.monthlyIncome || 0);
+  const monthlySavingsTarget = Number(user.monthlySavingsTarget || 0);
+  const money = (amount) => new Intl.NumberFormat(undefined, {
+    style: 'currency',
+    currency: user.currency || 'USD',
+    maximumFractionDigits: 0
+  }).format(amount);
+  const greetingHour = new Date().getHours();
+  const greeting = greetingHour < 12 ? 'Good morning' : greetingHour < 17 ? 'Good afternoon' : 'Good evening';
 
   const handleCreateTx = (e) => {
     e.preventDefault();
@@ -66,25 +73,25 @@ export const DashboardView = ({
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-3">
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Finerva Real-Time Security Shield Active</span>
+              <span>Finerva profile is connected</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Welcome back, <span className="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">{user.name}</span>
+              {greeting}, <span className="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">{user.name.split(' ')[0]}</span>
             </h1>
             <p className="text-slate-400 text-sm mt-1.5 max-w-xl">
-              Your financial net worth is up <strong className="text-emerald-400">+4.2%</strong> this month. Dual-AI recommends directing $450 into index fund reserves before Friday.
+              Your dashboard reflects the income, savings, and expense details you shared. Keep your profile up to date as your plans change.
             </p>
           </div>
 
           {/* Health Score Pill */}
           <div className="flex items-center gap-4 bg-slate-950/70 p-4 rounded-2xl border border-slate-800/80">
             <div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500/10 border-2 border-emerald-500/30">
-              <span className="text-xl font-black text-emerald-400">{user.healthScore}</span>
+              <span className="text-xl font-black text-emerald-400">—</span>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">Health Score</p>
-              <p className="text-sm font-bold text-white">Optimal Condition</p>
-              <p className="text-xs text-emerald-400">Top 12% in peer bracket</p>
+              <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">Profile snapshot</p>
+              <p className="text-sm font-bold text-white">Your own numbers</p>
+              <p className="text-xs text-emerald-400">No bank connection</p>
             </div>
           </div>
         </div>
@@ -121,10 +128,10 @@ export const DashboardView = ({
             </div>
           </div>
           <div className="mt-3">
-            <p className="text-2xl font-extrabold text-white">${totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+            <p className="text-2xl font-extrabold text-white">{money(totalBalance)}</p>
             <div className="flex items-center gap-1.5 mt-2 text-xs text-emerald-400 font-medium">
               <ArrowUpRight className="w-4 h-4" />
-              <span>+8.4% from last month</span>
+              <span>Current savings entered</span>
             </div>
           </div>
         </div>
@@ -138,10 +145,10 @@ export const DashboardView = ({
             </div>
           </div>
           <div className="mt-3">
-            <p className="text-2xl font-extrabold text-white">${monthlySpend.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+            <p className="text-2xl font-extrabold text-white">{money(monthlySpend)}</p>
             <div className="flex items-center gap-1.5 mt-2 text-xs text-rose-400 font-medium">
               <ArrowDownRight className="w-4 h-4" />
-              <span>36% of monthly income</span>
+              <span>{monthlyIncome > 0 ? `${Math.round((monthlySpend / monthlyIncome) * 100)}% of monthly income` : 'Monthly expenses entered'}</span>
             </div>
           </div>
         </div>
@@ -155,9 +162,9 @@ export const DashboardView = ({
             </div>
           </div>
           <div className="mt-3">
-            <p className="text-2xl font-extrabold text-white">$1,800.00 <span className="text-xs text-slate-400 font-normal">/ mo</span></p>
+            <p className="text-2xl font-extrabold text-white">{money(monthlySavingsTarget)} <span className="text-xs text-slate-400 font-normal">/ mo</span></p>
             <div className="flex items-center gap-1.5 mt-2 text-xs text-cyan-400 font-medium">
-              <span>90% of $2,000 target met</span>
+              <span>Your savings goal</span>
             </div>
           </div>
         </div>
@@ -171,10 +178,9 @@ export const DashboardView = ({
             </div>
           </div>
           <div className="mt-3">
-            <p className="text-2xl font-extrabold text-white">$42,180.50</p>
-            <div className="flex items-center gap-1.5 mt-2 text-xs text-emerald-400 font-medium">
-              <ArrowUpRight className="w-4 h-4" />
-              <span>+14.2% annualized ROI</span>
+            <p className="text-2xl font-extrabold text-white">Not connected</p>
+            <div className="flex items-center gap-1.5 mt-2 text-xs text-slate-400 font-medium">
+              <span>No investment account data is linked</span>
             </div>
           </div>
         </div>
@@ -194,7 +200,7 @@ export const DashboardView = ({
                   {filteredTransactions.length} items
                 </span>
               </h2>
-              <p className="text-xs text-slate-400 mt-0.5">Automated ledger with client-side verification</p>
+              <p className="text-xs text-slate-400 mt-0.5">Transactions you add are saved to your Finerva profile.</p>
             </div>
 
             {/* Filter */}
@@ -240,7 +246,7 @@ export const DashboardView = ({
 
                 <div className="text-right">
                   <p className={`text-sm font-bold ${tx.type === 'credit' ? 'text-emerald-400' : 'text-slate-200'}`}>
-                    {tx.type === 'credit' ? '+' : '-'}${tx.amount.toFixed(2)}
+                    {tx.type === 'credit' ? '+' : '-'}{money(tx.amount)}
                   </p>
                   <p className="text-[11px] text-slate-500 mt-0.5 flex items-center justify-end gap-1">
                     <Clock className="w-3 h-3" />
@@ -283,6 +289,7 @@ export const DashboardView = ({
                   </div>
                 );
               })}
+              {goals.length === 0 && <p className="text-xs leading-5 text-slate-400">Add a savings goal to see your progress here.</p>}
             </div>
           </div>
 
@@ -290,11 +297,11 @@ export const DashboardView = ({
           <div className="glass-panel p-6 rounded-3xl border border-emerald-500/20 bg-gradient-to-b from-emerald-950/20 to-slate-900/40 relative overflow-hidden">
             <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2">
               <Sparkles className="w-4 h-4" />
-              <span>Smart Recommendation</span>
+              <span>Monthly snapshot</span>
             </div>
-            <h4 className="text-sm font-bold text-white mb-2">Automate $200 weekly SIP</h4>
+            <h4 className="text-sm font-bold text-white mb-2">Income after listed expenses</h4>
             <p className="text-xs text-slate-300 leading-relaxed">
-              Based on your predictable cashflow surplus, investing $200 weekly into low-cost index funds will yield an estimated <strong>$14,200</strong> in compounded returns over 5 years.
+              Your entered income minus monthly expenses is <strong>{money(Math.max(0, monthlyIncome - monthlySpend))}</strong> per month, before debt payments and other costs. This simple estimate is not a forecast or investment recommendation.
             </p>
             <button 
               onClick={onOpenAI}
@@ -329,7 +336,7 @@ export const DashboardView = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 block mb-1">Amount ($)</label>
+                  <label className="text-xs font-semibold text-slate-300 block mb-1">                  Amount ({user.currency || 'USD'})</label>
                   <input 
                     type="number" 
                     step="0.01" 
