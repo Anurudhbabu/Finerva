@@ -591,3 +591,31 @@ Actions Taken:
 * Ran npm run build successfully
 * Started the Start application workflow and checked the browser preview and logs
 
+================================================================================
+[2026-10-06T01:52:39+05:30] Move Time-of-Day Theme to the Page Background
+================================================================================
+User Prompt (verbatim):
+it should hyst cgage the backgt=roud tio the related theme no a card
+
+Agent Response:
+I read this as asking for the time-of-day scene to fill the page background rather than sit inside a sky card. I moved the animated scene behind the landing page and dashboard, removed the sky panels, and made the dashboard hero transparent so the sky remains visible. The local-time behavior and preview selector are unchanged.
+
+Agent Response Summary:
+Moved the sunrise, afternoon, sunset, and night artwork to a full-screen background behind the app content. Verified the morning landing, afternoon dashboard, evening landing, and night dashboard on mobile; the production build passes and the workflow remains running.
+
+Commit SHA:
+659a8f64eb1d37d91d44ca483d02f9bc6cbf66d6
+
+Files Modified / Created:
+* src/App.jsx (Modified)
+* src/styles.css (Modified)
+* docs/logs.txt (Modified)
+
+Actions Taken:
+* Removed the boxed sky scene from the landing and dashboard
+* Added one animated, full-screen atmosphere behind both routes
+* Removed the dashboard hero's opaque background so the time theme shows through
+* Kept readable text colors for daytime and nighttime dashboard content
+* Ran npm run build and checked desktop and mobile previews
+* GitHub push remains blocked by the authentication failure reported in the prior turn; this commit is local
+
