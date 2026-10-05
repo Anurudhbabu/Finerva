@@ -4,8 +4,8 @@
 version: "1.0"
 
 submission:
-  team_id: ""
-  repository: ""
+  team_id: "07"
+  repository: "https://github.com/Anurudhbabu/Finerva.git"
   commit_sha: ""
   deployment_url: ""
   submitted_at: ""

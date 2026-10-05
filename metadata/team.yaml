@@ -4,16 +4,16 @@
 # - If your team has 4 members: provide all 4 members.
 
 team:
-  team_id: ""
-  name: ""
-  repository: "" # URL of the newly created GitHub repository for this project
+  team_id: "07"
+  name: "WOBBLE"
+  repository: "https://github.com/Anurudhbabu/Finerva.git" # URL of the newly created GitHub repository for this project
 
 members:
-  - name: ""
-    email: ""
-  - name: ""
-    email: ""
-  - name: ""
-    email: ""
-  - name: ""
-    email: ""
+  - name: "Ganta Anurudh Babu"
+    email: "gantaanurudhbabu@gmail.com"
+  - name: "Ageera Gokul"
+    email: "ageeragokul2007@gmail.com"
+  - name: "Sirigiri Madhur"
+    email: "sirigirimadhur@gmail.com"
+  - name: "Vijay Karthik"
+    email: "vijaykarthik9835@gmail.com"
