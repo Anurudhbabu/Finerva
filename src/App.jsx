@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useEffect, useMemo, useState } from "react";
 import {
   ArrowDownRight,
@@ -574,6 +575,132 @@ export default function App() {
       <div className={`notice${notice ? " notice-visible" : ""}`} aria-live="polite" aria-atomic="true" role="status">
         <span className="notice-mark"><Check size={13} aria-hidden="true" /></span>{notice}
       </div>
+=======
+import React, { useState } from 'react';
+import { Navbar } from './components/Navbar';
+import { DashboardView } from './components/DashboardView';
+import { AIChatView } from './components/AIChatView';
+import { BudgetView } from './components/BudgetView';
+import { GoalsView } from './components/GoalsView';
+import { SubscriptionsView } from './components/SubscriptionsView';
+import { CalculatorsView } from './components/CalculatorsView';
+import { MarketView } from './components/MarketView';
+import { StudentPerksView } from './components/StudentPerksView';
+import { SecurityView } from './components/SecurityView';
+
+import { 
+  initialUserData, 
+  initialTransactions, 
+  initialBudgets, 
+  initialGoals, 
+  initialSubscriptions 
+} from './data/mockData';
+
+export default function App() {
+  const [currentTab, setCurrentTab] = useState('dashboard');
+  const [user, setUser] = useState(initialUserData);
+  const [transactions, setTransactions] = useState(initialTransactions);
+  const [budgets, setBudgets] = useState(initialBudgets);
+  const [goals, setGoals] = useState(initialGoals);
+  const [subscriptions, setSubscriptions] = useState(initialSubscriptions);
+
+  const handleAddTransaction = (newTx) => {
+    setTransactions(prev => [newTx, ...prev]);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#080C15] text-slate-100 flex flex-col font-sans">
+      
+      {/* Navigation */}
+      <Navbar 
+        currentTab={currentTab} 
+        setCurrentTab={setCurrentTab} 
+        user={user} 
+        healthScore={user.healthScore} 
+      />
+
+      {/* Main Content Area */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {currentTab === 'dashboard' && (
+          <DashboardView 
+            user={user} 
+            transactions={transactions} 
+            onAddTransaction={handleAddTransaction}
+            goals={goals}
+            budgets={budgets}
+            onOpenAI={() => setCurrentTab('chat')}
+          />
+        )}
+
+        {currentTab === 'chat' && (
+          <AIChatView 
+            user={user} 
+            transactions={transactions} 
+          />
+        )}
+
+        {currentTab === 'budgets' && (
+          <BudgetView 
+            budgets={budgets} 
+            onUpdateBudget={setBudgets} 
+          />
+        )}
+
+        {currentTab === 'goals' && (
+          <GoalsView 
+            goals={goals} 
+            onUpdateGoals={setGoals} 
+          />
+        )}
+
+        {currentTab === 'subscriptions' && (
+          <SubscriptionsView 
+            subscriptions={subscriptions} 
+            onUpdateSubscriptions={setSubscriptions} 
+          />
+        )}
+
+        {currentTab === 'calculators' && (
+          <CalculatorsView />
+        )}
+
+        {currentTab === 'market' && (
+          <MarketView />
+        )}
+
+        {currentTab === 'student' && (
+          <StudentPerksView />
+        )}
+
+        {currentTab === 'security' && (
+          <SecurityView 
+            user={user}
+            transactions={transactions}
+            budgets={budgets}
+            goals={goals}
+          />
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="glass-panel border-t border-slate-800/80 py-6 px-4 text-center text-xs text-slate-500 mt-auto">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p>© 2026 Finerva AI — Team 07 (WOBBLE). Build Secure 24 Hackathon.</p>
+          <div className="flex items-center gap-4 text-slate-400">
+            <button onClick={() => setCurrentTab('security')} className="hover:text-emerald-400 transition-colors">
+              Security Controls
+            </button>
+            <span>•</span>
+            <button onClick={() => setCurrentTab('chat')} className="hover:text-emerald-400 transition-colors">
+              Dual-AI Engine
+            </button>
+            <span>•</span>
+            <span className="text-emerald-400 font-semibold">October 6, 2026</span>
+          </div>
+        </div>
+      </footer>
+
+>>>>>>> 499e4bb (feat: scaffold and implement Finerva full application with Dual-AI engine and dev environment)
     </div>
   );
 }
