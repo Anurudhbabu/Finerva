@@ -1,11 +1,6 @@
-<<<<<<< HEAD
 node_modules/
 dist/
 .vite/
-=======
-# Node modules
-node_modules/
-dist/
 dist-ssr/
 *.local
 
@@ -26,4 +21,3 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
->>>>>>> 499e4bb (feat: scaffold and implement Finerva full application with Dual-AI engine and dev environment)
