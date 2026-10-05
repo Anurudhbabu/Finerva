@@ -862,3 +862,39 @@ Files Modified / Created:
 
 Actions Taken:
 * Read AGENTS.md, verified existing onboarding agreement and team metadata, and reviewed the current auth flow and architecture notes
+
+================================================================================
+[2026-10-06T05:16:48+05:30] Google Authentication Implementation and Verification
+================================================================================
+User Prompt (verbatim):
+integrate google auth for authentication
+
+Agent Response:
+Integrated Google Identity Services into the user sign-in and registration page. The backend verifies Google ID tokens with Google's authentication library and only accepts a verified email; existing accounts are linked by email, and new users complete the existing financial-profile form before a Finerva session is issued. Password sign-in and the separate administrator login remain available. Added exact-origin CORS allowlisting for deployments and documented Google Cloud setup and environment variables in README.md.
+
+Validation passed: `npm run build`, backend syntax and diagnostics, isolated API smoke tests for the unconfigured Google response (503), malformed token rejection (401), password login compatibility (401), and configured CORS allow/block behavior. Browser verification confirmed the login page shows the required configuration message when no client ID is present. A live Google consent/sign-in round trip remains dependent on configuring the team's Google Cloud Web Client ID and authorized origin.
+
+Agent Response Summary:
+Added Google sign-in with server-side ID-token verification, verified-email account linking, and required financial-profile completion for new Google users. Preserved password/admin auth, documented client setup, and verified build, frontend rendering, API failure paths, and CORS configuration.
+
+Commit SHA:
+02515bda5b4b59c8ae7a94d1d879e65fd6121c04
+
+Files Modified / Created:
+* README.md (Modified)
+* docs/APPROACH.md (Modified)
+* docs/logs.txt (Modified)
+* package-lock.json (Modified)
+* package.json (Modified)
+* src/App.jsx (Modified)
+* src/backend/server.js (Modified)
+* src/components/AuthPages.jsx (Modified)
+* src/services/api.js (Modified)
+
+Actions Taken:
+* Added `google-auth-library` and integrated the Google Identity Services credential button
+* Added Google token verification, account linking, validated profile creation, and missing-password rejection for Google-only accounts
+* Added configurable exact-origin CORS allowlisting and OAuth setup documentation
+* Ran `npm run build`, `node --check`, workspace diagnostics, and isolated API smoke tests
+* Signed out in the browser and confirmed the Google configuration notice is visible without a client ID
+* Committed the implementation as 02515bda5b4b59c8ae7a94d1d879e65fd6121c04
