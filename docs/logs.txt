@@ -672,3 +672,61 @@ Actions Taken:
 * Re-read AGENTS.md and checked the onboarding agreement, team metadata, recent activity log, and architecture notes
 * Inspected the current React app and reusable finance components
 * Confirmed the backend folder contains no backend source files
+
+================================================================================
+[2026-10-06T04:56:42+05:30] Finerva Integration Completion Record
+================================================================================
+User Prompt (verbatim):
+change smartspends name to Finerva everywhere, keep a retractable dashboard for quick actions which should be on left side corner,make a login page where all the necessary details are taken like income,savings etcc according to the requirements and another login page for the admin,the admin page should have all the controls,add a chatbot floating icon and see that the backend and frontend are connected perfectly,at the start after login it should show good morning or evening according to the time along with their name.
+
+Agent Response:
+Replaced the active SmartSpends presentation with Finerva branding and a working authenticated dashboard. User registration captures name, email, password, currency, monthly income, current savings, monthly expenses, savings goal, debt balance, occupation, and risk preference. Added a collapsible left-side quick-action navigation, separate `/admin/login` and protected `/admin` console (account enable/disable/delete, maintenance mode, assistant availability), a floating assistant, and a greeting based on local time and the user's first name.
+
+Connected the frontend to a new local Node API through Vite's `/api` proxy. Account profiles, transactions, budgets, goals, and subscriptions are persisted per user; the assistant uses the saved profile for local rule-based guidance. Passwords are scrypt-hashed and admin routes are role-protected. The service does not connect to a bank or external AI provider. Its JSON data file is unencrypted and sessions are memory-only, so this remains a local demo and must not be exposed publicly without production-grade storage, transport, and session controls. Run both services with `npm run dev:all`; Vite selected `http://localhost:5001/` because port 5000 was occupied. Local demo administrator sign-in is documented in README.md; set `FINERVA_ADMIN_PASSWORD` before sharing the service.
+
+Validation passed: `npm run build`, Node syntax checks, and browser/API smoke tests covering registration, login, profile values, greeting, chatbot profile context, finance persistence, admin access control and settings, maintenance mode, test-account cleanup, and the Vite API proxy.
+
+Agent Response Summary:
+Implemented the requested Finerva user/admin flows, left quick-action drawer, profile-aware dashboard, floating assistant, and persistent API integration. Updated the directly related security and architecture documentation to accurately state the local-demo boundaries, and removed obsolete mock AI behavior and hard-coded personal financial figures. The production build and integration smoke tests passed.
+
+Commit SHA:
+76d4fd1cfcfcf7e976c2c7ba38466d2f929fe804
+
+Files Modified / Created:
+* .gitignore (Modified)
+* README.md (Modified)
+* docs/APPROACH.md (Modified)
+* docs/logs.txt (Modified)
+* index.html (Modified)
+* package.json (Modified)
+* src/App.jsx (Modified)
+* src/backend/data.json (Modified; local ignored runtime data, not committed)
+* src/backend/dev.js (Created)
+* src/backend/server.js (Created)
+* src/components/AdminControlView.jsx (Created)
+* src/components/AIChatView.jsx (Modified)
+* src/components/AssistantWidget.jsx (Created)
+* src/components/AuthPages.jsx (Created)
+* src/components/BudgetView.jsx (Modified)
+* src/components/DashboardView.jsx (Modified)
+* src/components/GoalsView.jsx (Modified)
+* src/components/MarketView.jsx (Modified)
+* src/components/QuickActionsSidebar.jsx (Created)
+* src/components/SecurityView.jsx (Modified)
+* src/components/StudentPerksView.jsx (Modified)
+* src/components/SubscriptionsView.jsx (Modified)
+* src/data/mockData.js (Modified)
+* src/index.html (Modified)
+* src/main.jsx (Modified)
+* src/services/aiAdvisor.js (Deleted)
+* src/services/api.js (Created)
+* vite.config.js (Modified)
+
+Actions Taken:
+* Added local API routes for registration/login, role-protected admin access, profile finance data, assistant guidance, service settings, and user access controls
+* Added scrypt password hashing, bounded request parsing/validation, account login rate limiting, and ignored local JSON persistence
+* Routed the dashboard modules and floating assistant through authenticated API requests
+* Updated app metadata, README, architecture/threat-model notes, and this activity log
+* Ran `npm run build` successfully and checked JavaScript syntax and git whitespace
+* Tested user/admin flows through the browser and verified API authorization, data persistence, controls, and frontend proxy connectivity
+* Committed as 76d4fd1cfcfcf7e976c2c7ba38466d2f929fe804 and pushed to `origin main`
