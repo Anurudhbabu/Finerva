@@ -10,10 +10,11 @@ import {
   TrendingUp, 
   ShieldCheck, 
   Zap,
-  Sparkles
+  Sparkles,
+  LogOut
 } from 'lucide-react';
 
-export const Navbar = ({ currentTab, setCurrentTab, user, healthScore }) => {
+export const Navbar = ({ currentTab, setCurrentTab, user, healthScore, onLogout }) => {
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'chat', label: 'AI Advisor', icon: Bot, badge: 'Dual AI' },
@@ -82,14 +83,14 @@ export const Navbar = ({ currentTab, setCurrentTab, user, healthScore }) => {
 
         {/* User Status / Quick Stats */}
         <div className="flex items-center gap-3">
-          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs">
+          {Number.isFinite(healthScore) && <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs">
             <span className="flex h-2 w-2 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
             <span className="text-slate-400">Score:</span>
             <span className="font-bold text-emerald-400">{healthScore}/100</span>
-          </div>
+          </div>}
 
           <button 
             onClick={() => setCurrentTab('chat')}
@@ -97,6 +98,18 @@ export const Navbar = ({ currentTab, setCurrentTab, user, healthScore }) => {
           >
             <Sparkles className="w-3.5 h-3.5 fill-slate-950" />
             <span className="hidden sm:inline">Ask AI Advisor</span>
+          </button>
+          <div className="hidden lg:block max-w-36 truncate text-right">
+            <span className="block truncate text-xs font-semibold text-white">{user.name}</span>
+            <span className="block truncate text-[10px] text-slate-400">{user.email}</span>
+          </div>
+          <button
+            onClick={onLogout}
+            aria-label="Sign out"
+            title="Sign out"
+            className="rounded-xl border border-slate-700 bg-slate-900/70 p-2.5 text-slate-300 transition hover:border-rose-400/30 hover:text-rose-200"
+          >
+            <LogOut className="h-4 w-4" />
           </button>
         </div>
 

@@ -9,7 +9,7 @@ import { DashboardView } from './components/DashboardView';
 import { GoalsView } from './components/GoalsView';
 import { AIChatView } from './components/AIChatView';
 import { MarketView } from './components/MarketView';
-import { QuickActionsSidebar } from './components/QuickActionsSidebar';
+import { Navbar } from './components/Navbar';
 import { SecurityView } from './components/SecurityView';
 import { StudentPerksView } from './components/StudentPerksView';
 import { SubscriptionsView } from './components/SubscriptionsView';
@@ -44,7 +44,6 @@ export default function App() {
   const [account, setAccount] = useState(null);
   const [sessionLoading, setSessionLoading] = useState(Boolean(sessionStorage.getItem('finerva-token')));
   const [sessionError, setSessionError] = useState('');
-  const [sidebarExpanded, setSidebarExpanded] = useState(() => window.innerWidth >= 1024);
   const [financeReady, setFinanceReady] = useState(false);
   const [financeError, setFinanceError] = useState('');
   const [syncing, setSyncing] = useState(false);
@@ -209,19 +208,15 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#080c15] text-slate-100">
-      <QuickActionsSidebar
-        active={currentTab}
-      onSelect={(tab) => {
-        setCurrentTab(tab);
-        if (window.innerWidth < 1024) setSidebarExpanded(false);
-      }}
-        user={user}
-        expanded={sidebarExpanded}
-        onToggle={() => setSidebarExpanded((expanded) => !expanded)}
-        onLogout={signOut}
+      <Navbar
+      currentTab={currentTab}
+      setCurrentTab={setCurrentTab}
+      user={user}
+      healthScore={user.healthScore}
+      onLogout={signOut}
       />
-      <main className={`min-h-screen px-4 py-7 transition-[margin] duration-200 sm:px-7 lg:px-9 ml-[88px] ${sidebarExpanded ? 'lg:ml-[280px]' : 'lg:ml-[92px]'}`}>
-        <div className="mx-auto w-full max-w-7xl">
+      <main className="min-h-screen w-full px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-7xl">
           {financeError && <p role="alert" className="mb-5 rounded-xl border border-rose-400/20 bg-rose-400/10 px-4 py-3 text-sm text-rose-200">{financeError}</p>}
           {syncing && <p role="status" className="mb-4 text-right text-xs text-slate-500">Saving your finance data…</p>}
           {!financeReady ? <div className="grid min-h-[55vh] place-items-center text-sm text-slate-400">{financeError ? 'Saved profile data is unavailable.' : 'Loading your dashboard…'}</div> : renderCurrentTab()}
