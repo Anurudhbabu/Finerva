@@ -94,7 +94,25 @@ npm run dev:all
 
 Open the local URL printed by Vite (normally `http://localhost:5000`; if that port is occupied, Vite may select another). The combined command starts both services, and Vite forwards `/api` requests to the API on port `5174`.
 
-Create an account at `/login`. Registration asks for your name, email, password, currency, monthly income, current savings, monthly expenses, savings goal, debt balance, occupation, and risk preference. The demo stores profile and finance data in `src/backend/data.json`; do not enter real account credentials or payment-card details.
+### Configure Google sign-in
+
+Google sign-in uses Google Identity Services in the browser and verifies the returned ID token in the Finerva API. To enable it:
+
+1. In Google Cloud Console, configure the OAuth consent screen and create an OAuth 2.0 client ID for a **Web application**. Add your account as a test user if the consent screen is in testing mode.
+2. Add the exact frontend origin under **Authorized JavaScript origins** (for example, `http://localhost:5000`; also add the actual port if Vite selects another one).
+3. Set the same client ID for the frontend and backend in the PowerShell window where you start Finerva:
+
+   ```powershell
+   $env:GOOGLE_CLIENT_ID = "<your-web-client-id>"
+   $env:VITE_GOOGLE_CLIENT_ID = $env:GOOGLE_CLIENT_ID
+   npm run dev:all
+   ```
+
+For deployment, set `GOOGLE_CLIENT_ID` in the API environment, `VITE_GOOGLE_CLIENT_ID` when building the frontend, and `FINERVA_ALLOWED_ORIGINS` to the exact deployed frontend origin in the API environment. Separate multiple allowed origins with commas. Register that same site origin in Google Cloud. The client ID is public configuration; this flow does not use a client secret. Without the Google variables, Google sign-in remains unavailable and password sign-in continues to work.
+
+Create an account at `/login` with a password or Google. Password registration asks for your name, email, password, currency, monthly income, current savings, monthly expenses, savings goal, debt balance, occupation, and risk preference. Google registration asks for the financial profile after identity verification. The demo stores profile and finance data in `src/backend/data.json`; do not enter real account credentials or payment-card details.
+
+Google-authenticated users provide the same financial profile before their first account is created. The API verifies Google's signed ID token, audience, and verified email before linking or creating an account; the token itself is not stored.
 
 The separate administrator sign-in is `/admin/login`. For a local demo, the default credentials are `admin@finerva.local` / `FinervaAdmin!2026`. Set a private `FINERVA_ADMIN_PASSWORD` environment variable before sharing the service. This prototype stores financial data in plain local JSON and uses in-memory sessions. It is not production-ready and must not be exposed publicly without stronger storage, session, transport, and operational controls.
 

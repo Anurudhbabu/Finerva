@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ShieldCheck, WalletCards, Zap } from 'lucide-react';
+
+const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID?.trim() || '';
 
 const initialProfile = {
   name: '',
@@ -30,6 +32,83 @@ function demoProfile() {
     occupation: 'Student',
     riskPreference: 'balanced'
   };
+}
+
+function GoogleIdentityButton({ onCredential, disabled }) {
+  const buttonRef = useRef(null);
+  const onCredentialRef = useRef(onCredential);
+  const [error, setError] = useState('');
+  onCredentialRef.current = onCredential;
+
+  useEffect(() => {
+    if (!googleClientId) return undefined;
+    let active = true;
+    let script = document.querySelector('script[data-finerva-google-identity]');
+    const renderButton = () => {
+      if (!active || !buttonRef.current) return;
+      const identity = window.google?.accounts?.id;
+      if (!identity) {
+        setError('Google sign-in could not be loaded. Check your network and try again.');
+        return;
+      }
+      identity.initialize({
+        client_id: googleClientId,
+        callback: (response) => {
+          if (!response.credential) {
+            setError('Google did not return a valid sign-in credential.');
+            return;
+          }
+          onCredentialRef.current(response.credential);
+        },
+        auto_select: false
+      });
+      identity.renderButton(buttonRef.current, {
+        theme: 'filled_black',
+        size: 'large',
+        text: 'continue_with',
+        shape: 'rectangular',
+        width: 300
+      });
+    };
+    const handleLoad = () => {
+      if (script) script.dataset.loaded = 'true';
+      renderButton();
+    };
+    const handleError = () => setError('Google sign-in could not be loaded. Check your network and try again.');
+
+    if (window.google?.accounts?.id) {
+      renderButton();
+    } else if (script?.dataset.loaded === 'true') {
+      handleError();
+    } else {
+      if (!script) {
+        script = document.createElement('script');
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+        script.defer = true;
+        script.dataset.finervaGoogleIdentity = 'true';
+      }
+      script.addEventListener('load', handleLoad);
+      script.addEventListener('error', handleError);
+      if (!script.isConnected) document.head.appendChild(script);
+    }
+
+    return () => {
+      active = false;
+      script?.removeEventListener('load', handleLoad);
+      script?.removeEventListener('error', handleError);
+      buttonRef.current?.replaceChildren();
+    };
+  }, []);
+
+  return (
+    <div className={`flex flex-col items-center ${disabled ? 'pointer-events-none opacity-60' : ''}`}>
+      {googleClientId
+        ? <div ref={buttonRef} aria-label="Continue with Google" />
+        : <p className="text-center text-xs text-slate-500">Google sign-in is unavailable until <code>VITE_GOOGLE_CLIENT_ID</code> is configured.</p>}
+      {error && <p role="alert" className="mt-2 text-center text-xs text-rose-200">{error}</p>}
+    </div>
+  );
 }
 
 function Brand() {
@@ -86,19 +165,38 @@ function Field({ label, className = '', ...props }) {
   );
 }
 
-export function UserAuthPage({ onAuthenticated, startupError = '' }) {
+export function UserAuthPage({ onAuthenticated, onGoogleAuthenticated, startupError = '' }) {
   const [mode, setMode] = useState('login');
   const [form, setForm] = useState(initialProfile);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [googleCredential, setGoogleCredential] = useState('');
   const registering = mode === 'register';
 
   const update = (event) => setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
 
   const autofillDemo = () => {
     setForm(demoProfile());
+    setGoogleCredential('');
     setMode('register');
     setError('');
+  };
+
+  const signInWithGoogle = async (credential) => {
+    setBusy(true);
+    setError('');
+    try {
+      const result = await onGoogleAuthenticated(credential);
+      if (result.requiresProfile) {
+        setGoogleCredential(credential);
+        setForm((current) => ({ ...current, name: result.name, email: result.email, password: '' }));
+        setMode('register');
+      }
+    } catch (requestError) {
+      setError(requestError.message);
+    } finally {
+      setBusy(false);
+    }
   };
 
   const submit = async (event) => {
@@ -106,7 +204,21 @@ export function UserAuthPage({ onAuthenticated, startupError = '' }) {
     setBusy(true);
     setError('');
     try {
-      await onAuthenticated(mode, registering ? form : { email: form.email, password: form.password });
+      if (googleCredential) {
+        const { monthlyIncome, currentSavings, monthlyExpenses, savingsGoal, debtBalance, currency, occupation, riskPreference } = form;
+        await onGoogleAuthenticated(googleCredential, {
+          monthlyIncome,
+          currentSavings,
+          monthlyExpenses,
+          savingsGoal,
+          debtBalance,
+          currency,
+          occupation,
+          riskPreference
+        });
+      } else {
+        await onAuthenticated(mode, registering ? form : { email: form.email, password: form.password });
+      }
     } catch (requestError) {
       setError(requestError.message);
     } finally {
@@ -123,7 +235,7 @@ export function UserAuthPage({ onAuthenticated, startupError = '' }) {
         </div>
         <div className="mt-6 grid grid-cols-2 rounded-xl bg-slate-950 p-1">
           {['login', 'register'].map((tab) => (
-            <button key={tab} type="button" onClick={() => { setMode(tab); setError(''); }} className={`rounded-lg px-3 py-2.5 text-sm font-semibold transition ${mode === tab ? 'bg-emerald-400 text-slate-950' : 'text-slate-400 hover:text-white'}`}>
+            <button key={tab} type="button" onClick={() => { setMode(tab); setError(''); if (tab === 'login') setGoogleCredential(''); }} className={`rounded-lg px-3 py-2.5 text-sm font-semibold transition ${mode === tab ? 'bg-emerald-400 text-slate-950' : 'text-slate-400 hover:text-white'}`}>
               {tab === 'login' ? 'Sign in' : 'Create account'}
             </button>
           ))}
@@ -143,7 +255,8 @@ export function UserAuthPage({ onAuthenticated, startupError = '' }) {
           {startupError && <p role="alert" className="rounded-xl border border-amber-400/20 bg-amber-400/10 px-3.5 py-3 text-sm text-amber-100">{startupError}</p>}
           {registering && (
             <>
-              <Field label="Full name" name="name" autoComplete="name" maxLength={80} value={form.name} onChange={update} required />
+              <Field label="Full name" name="name" autoComplete="name" maxLength={80} value={form.name} onChange={update} readOnly={Boolean(googleCredential)} required />
+              {googleCredential && <p className="-mt-2 text-xs text-slate-500">Name and email are taken from your verified Google account.</p>}
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field label="Monthly income" name="monthlyIncome" type="number" min="0" max="1000000000" step="0.01" value={form.monthlyIncome} onChange={update} placeholder="e.g. 4200" required />
                 <Field label="Current savings" name="currentSavings" type="number" min="0" max="1000000000" step="0.01" value={form.currentSavings} onChange={update} placeholder="e.g. 8500" required />
@@ -156,13 +269,19 @@ export function UserAuthPage({ onAuthenticated, startupError = '' }) {
               </div>
             </>
           )}
-          <Field label="Email address" name="email" type="email" autoComplete="email" maxLength={254} value={form.email} onChange={update} required />
-          <Field label="Password (10+ characters)" name="password" type="password" autoComplete={registering ? 'new-password' : 'current-password'} minLength={registering ? 10 : undefined} maxLength={128} value={form.password} onChange={update} required />
+          <Field label="Email address" name="email" type="email" autoComplete="email" maxLength={254} value={form.email} onChange={update} readOnly={Boolean(googleCredential)} required />
+          {!googleCredential && <Field label="Password (10+ characters)" name="password" type="password" autoComplete={registering ? 'new-password' : 'current-password'} minLength={registering ? 10 : undefined} maxLength={128} value={form.password} onChange={update} required />}
           {error && <p role="alert" className="rounded-xl border border-rose-400/20 bg-rose-400/10 px-3.5 py-3 text-sm text-rose-200">{error}</p>}
           <button disabled={busy} className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-400 px-4 py-3.5 text-sm font-bold text-slate-950 transition hover:bg-emerald-300 disabled:cursor-wait disabled:opacity-60">
-            {busy ? 'Connecting securely…' : registering ? 'Create my account' : 'Sign in'} {!busy && <ArrowRight size={17} />}
+            {busy ? 'Connecting securely…' : googleCredential ? 'Save profile and continue' : registering ? 'Create my account' : 'Sign in'} {!busy && <ArrowRight size={17} />}
           </button>
         </form>
+        <div className="my-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-wide text-slate-600">
+          <span className="h-px flex-1 bg-slate-800" />
+          <span>or continue with</span>
+          <span className="h-px flex-1 bg-slate-800" />
+        </div>
+        <GoogleIdentityButton onCredential={signInWithGoogle} disabled={busy} />
         <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-slate-800 pt-5 text-xs text-slate-500">
           <span>Your data is stored by this demo service.</span>
           <Link to="/admin/login" className="font-semibold text-emerald-300 hover:text-emerald-200">Administrator sign-in</Link>

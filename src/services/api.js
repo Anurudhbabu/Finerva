@@ -22,6 +22,10 @@ export const api = {
     method: 'POST',
     body: JSON.stringify(credentials)
   }),
+  googleLogin: (credentials) => request('/auth/google', {
+    method: 'POST',
+    body: JSON.stringify(credentials)
+  }),
   adminLogin: (credentials) => request('/admin/login', {
     method: 'POST',
     body: JSON.stringify(credentials)

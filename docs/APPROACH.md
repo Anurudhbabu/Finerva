@@ -25,6 +25,7 @@ Young professionals, university students, and early-career engineers frequently 
 - **OWASP Top 10 Protections:**
   - *Broken Access Control:* Opaque bearer sessions and server-side role checks separate user and administrator endpoints.
   - *Credential Storage:* User passwords are salted and hashed with Node `scrypt`; raw passwords are not stored.
+  - *Federated Identity:* Google ID tokens are signature-, audience-, issuer-, and expiry-verified by Google's auth library. The API requires Google's verified email claim, does not persist the ID token, and keeps administrator authentication separate.
   - *Input Handling:* The API validates profile values, chat lengths, and saved finance records before persistence.
   - *Known Prototype Limits:* Sessions are held in memory and finance/profile records are plain JSON on disk. The demo is not suitable for public production deployment.
 
@@ -35,12 +36,13 @@ Young professionals, university students, and early-career engineers frequently 
 ### 2.1 High-Level Architecture Overview
 Finerva is a React/Vite single-page finance demo connected to a same-origin proxied Node API:
 1. **Presentation Layer:** React 18, Tailwind CSS, and Lucide icons provide login, profile setup, user finance modules, and a separate administrator console.
-2. **API Layer:** `src/backend/server.js` validates requests, authenticates users/admins, applies role checks, and serves the profile-aware local finance assistant.
-3. **Persistence Layer:** User profiles and finance records are stored in `src/backend/data.json`; credentials are stored as salted `scrypt` hashes. Session tokens remain in backend memory.
+2. **API Layer:** `src/backend/server.js` validates requests, authenticates users with passwords or verified Google ID tokens, authenticates admins separately, applies role checks, and serves the profile-aware local finance assistant.
+3. **Persistence Layer:** User profiles and finance records are stored in `src/backend/data.json`; password credentials are stored as salted `scrypt` hashes, while linked Google identities use the provider subject. Session tokens remain in backend memory.
 4. **Tooling & Development:** `npm run dev:all` starts Vite and the local API together; Vite proxies `/api` requests to the API on port 5174.
 
 ### 2.2 Data Flow & Component Interaction
 - User registration sends financial profile details to the API, which validates and persists them with an scrypt password hash.
+- Google sign-in sends a short-lived Google ID token to the API for signature and audience verification. Existing users are matched by verified email; new users complete the same financial-profile form before their account and API session are created.
 - Authenticated dashboard operations load and save transactions, budgets, goals, and subscriptions through `/api/finance`.
 - Chat requests use the authenticated user's stored profile and receive local rule-based guidance; no external model or bank API is called.
 - Admin-only endpoints expose masked account listings, access enable/disable/delete actions, maintenance mode, and assistant availability settings.
@@ -81,8 +83,15 @@ Finerva is a React/Vite single-page finance demo connected to a same-origin prox
 ### ADR-003: Local Authenticated API and Explicit Prototype Boundaries
 - **Status:** Accepted
 - **Context:** The prior UI used illustrative in-memory values without an API, while the requested login, admin console, and persistent financial data require a connected service.
-- **Decision:** Add a dependency-free Node API under `src/backend/`, use scrypt password hashes, opaque in-memory bearer sessions, per-user JSON persistence, and role-protected admin controls. The frontend calls the API through Vite's `/api` proxy.
+- **Decision:** Add a Node API under `src/backend/`, use scrypt password hashes, opaque in-memory bearer sessions, per-user JSON persistence, and role-protected admin controls. The frontend calls the API through Vite's `/api` proxy.
 - **Trade-offs:** This supports a self-contained local demonstration but does not provide encrypted-at-rest storage, durable sessions, TLS termination, database isolation, or production-grade secret management. Set `FINERVA_ADMIN_PASSWORD` and do not expose the development service publicly.
+
+### ADR-004: Verified Google Sign-In with Profile Completion
+- **Status:** Accepted
+- **Context:** Users requested Google authentication while the dashboard and finance API depend on a user-provided financial profile.
+- **Decision:** Use Google Identity Services in the browser and verify its ID token in the API with Google's auth library. Match existing accounts using the verified email; require first-time Google users to complete the existing profile form before issuing an app session. Keep password authentication and the separate admin login available.
+- **Security controls:** Verify the token's signature, audience, issuer, and expiry; require a verified email; retain the Google subject for account linking but never return it to the client; do not persist the ID token. Configure the same Web Client ID as `VITE_GOOGLE_CLIENT_ID` for the frontend and `GOOGLE_CLIENT_ID` for the API. Production frontend origins must be explicitly allowlisted with `FINERVA_ALLOWED_ORIGINS`.
+- **Trade-offs:** Google sign-in is unavailable until a Web Client ID and authorized frontend origins are configured in Google Cloud. The surrounding JSON persistence and in-memory sessions remain prototype-only and are not production-grade.
 
 ---
 
@@ -100,13 +109,17 @@ Finerva is a React/Vite single-page finance demo connected to a same-origin prox
 - **Focus:** Replace the static entry experience with Finerva user registration/login, a role-separated admin login and controls, a retractable left quick-action sidebar, profile-aware greetings, floating assistant, and persisted finance modules.
 - **Resolution:** Added local Node API endpoints for authentication, profile/finance persistence, assistant replies, admin service settings, and account access management. Password hashes use scrypt; the JSON-backed local demo remains explicitly unsuitable for public production use.
 
+### [2026-10-06 05:10 IST] Entry 4: Google Authentication
+- **Focus:** Add Google sign-in and sign-up without bypassing financial-profile onboarding or replacing password/admin authentication.
+- **Resolution:** The browser obtains a Google ID token and the API verifies it before linking by verified email or creating a profile-complete account. Google is optional until the Web Client ID and authorized frontend origin are configured.
+
 ---
 
 ## 6. Testing, Security Verification & Deployment Record
 
 ### 6.1 Testing & Security Verification Strategy
 - **Production Build:** Validate with `npm run build`.
-- **API Smoke Tests:** Verify registration, password login, profile/finance persistence, profile-aware assistant responses, admin-only access, and admin settings.
+- **API Smoke Tests:** Verify registration, password login, Google ID-token validation/profile completion, profile/finance persistence, profile-aware assistant responses, admin-only access, and admin settings.
 - **Prototype Security Controls:** Scrypt password hashing, bounded input validation, masked admin user listings, and role-protected account/service controls. JSON user records are not encrypted at rest and sessions are memory-only.
 
 ### 6.2 Local Run

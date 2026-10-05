@@ -4,12 +4,19 @@ import { promisify } from 'node:util';
 import { readFile, mkdir, rename, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { OAuth2Client } from 'google-auth-library';
 
 const scrypt = promisify(scryptCallback);
 const root = path.dirname(fileURLToPath(import.meta.url));
 const dataPath = process.env.FINERVA_DATA_FILE || path.join(root, 'data.json');
 const port = Number(process.env.FINERVA_API_PORT || 5174);
 const configuredAdminPassword = process.env.FINERVA_ADMIN_PASSWORD || 'FinervaAdmin!2026';
+const googleClientId = process.env.GOOGLE_CLIENT_ID || '';
+const googleAuthClient = googleClientId ? new OAuth2Client(googleClientId) : null;
+const allowedOrigins = new Set((process.env.FINERVA_ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean));
 const sessions = new Map();
 const attempts = new Map();
 let writeQueue = Promise.resolve();
@@ -160,6 +167,26 @@ function cleanFinance(body) {
   return { transactions, budgets, goals, subscriptions };
 }
 
+function cleanProfile(body) {
+  const profile = requireRecord(body, 'Profile');
+  if (!['USD', 'INR', 'EUR', 'GBP'].includes(profile.currency)) {
+    throw Object.assign(new Error('Choose a supported currency.'), { status: 400 });
+  }
+  if (!['conservative', 'balanced', 'growth'].includes(profile.riskPreference)) {
+    throw Object.assign(new Error('Choose a supported risk preference.'), { status: 400 });
+  }
+  return {
+    monthlyIncome: requireMoney(profile.monthlyIncome, 'Monthly income'),
+    currentSavings: requireMoney(profile.currentSavings, 'Current savings'),
+    monthlyExpenses: requireMoney(profile.monthlyExpenses, 'Monthly expenses'),
+    savingsGoal: requireMoney(profile.savingsGoal, 'Monthly savings goal'),
+    debtBalance: requireMoney(profile.debtBalance, 'Debt balance'),
+    currency: profile.currency,
+    occupation: requireString(profile.occupation, 'Occupation', 80),
+    riskPreference: profile.riskPreference
+  };
+}
+
 function normalizedEmail(value) {
   const email = requireString(value, 'Email', 254).toLowerCase();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -181,7 +208,7 @@ async function passwordMatches(password, salt, expectedHex) {
 }
 
 function publicUser(user) {
-  const { passwordSalt, passwordHash, ...safeUser } = user;
+  const { passwordSalt, passwordHash, googleSubject, ...safeUser } = user;
   return safeUser;
 }
 
@@ -270,22 +297,7 @@ async function handle(request, response) {
     if (store.users.some((user) => user.email === email)) {
       throw Object.assign(new Error('An account with this email already exists.'), { status: 409 });
     }
-    if (!['USD', 'INR', 'EUR', 'GBP'].includes(body.currency)) {
-      throw Object.assign(new Error('Choose a supported currency.'), { status: 400 });
-    }
-    if (!['conservative', 'balanced', 'growth'].includes(body.riskPreference)) {
-      throw Object.assign(new Error('Choose a supported risk preference.'), { status: 400 });
-    }
-    const profile = {
-      monthlyIncome: requireMoney(body.monthlyIncome, 'Monthly income'),
-      currentSavings: requireMoney(body.currentSavings, 'Current savings'),
-      monthlyExpenses: requireMoney(body.monthlyExpenses, 'Monthly expenses'),
-      savingsGoal: requireMoney(body.savingsGoal, 'Monthly savings goal'),
-      debtBalance: requireMoney(body.debtBalance, 'Debt balance'),
-      currency: body.currency,
-      occupation: requireString(body.occupation, 'Occupation', 80),
-      riskPreference: body.riskPreference
-    };
+    const profile = cleanProfile(body);
     const credentials = await passwordRecord(password);
     const user = {
       id: randomBytes(16).toString('hex'),
@@ -304,12 +316,75 @@ async function handle(request, response) {
     return;
   }
 
+  if (request.method === 'POST' && url.pathname === '/api/auth/google') {
+    if (!googleAuthClient) {
+      throw Object.assign(new Error('Google sign-in is not configured on the Finerva server.'), { status: 503 });
+    }
+    const credential = requireString(body.credential, 'Google credential', 10_000);
+    let payload;
+    try {
+      const ticket = await googleAuthClient.verifyIdToken({ idToken: credential, audience: googleClientId });
+      payload = ticket.getPayload();
+    } catch {
+      throw Object.assign(new Error('Google sign-in could not be verified. Please try again.'), { status: 401 });
+    }
+    if (!payload?.sub || !payload.email || payload.email_verified !== true) {
+      throw Object.assign(new Error('Google must provide a verified email address to sign in.'), { status: 401 });
+    }
+
+    const email = normalizedEmail(payload.email);
+    checkLoginLimit(request, email);
+    const existingUser = store.users.find((user) => user.email === email);
+    if (existingUser) {
+      if (!existingUser.enabled) {
+        throw Object.assign(new Error('This account has been disabled. Contact an administrator.'), { status: 403 });
+      }
+      if (existingUser.googleSubject && existingUser.googleSubject !== payload.sub) {
+        throw Object.assign(new Error('This email is linked to a different Google account.'), { status: 403 });
+      }
+      if (!existingUser.googleSubject) {
+        existingUser.googleSubject = payload.sub;
+        await persistStore();
+      }
+      issueSession(existingUser, 'user', response);
+      return;
+    }
+
+    if (body.profile === undefined) {
+      json(response, 200, {
+        requiresProfile: true,
+        name: requireString(payload.name || email.split('@')[0], 'Google profile name', 80),
+        email
+      });
+      return;
+    }
+
+    const profile = cleanProfile(body.profile);
+    const user = {
+      id: randomBytes(16).toString('hex'),
+      name: requireString(payload.name || email.split('@')[0], 'Google profile name', 80),
+      email,
+      role: 'user',
+      enabled: true,
+      authProvider: 'google',
+      googleSubject: payload.sub,
+      createdAt: new Date().toISOString(),
+      profile,
+      finance: { transactions: [], budgets: [], goals: [], subscriptions: [] }
+    };
+    store.users.push(user);
+    await persistStore();
+    issueSession(user, 'user', response);
+    return;
+  }
+
   if (request.method === 'POST' && url.pathname === '/api/auth/login') {
     const email = normalizedEmail(body.email);
     checkLoginLimit(request, email);
     const password = requireString(body.password, 'Password', 128);
     const user = store.users.find((candidate) => candidate.email === email);
-    if (!user || !await passwordMatches(password, user.passwordSalt, user.passwordHash)) {
+    if (!user || !user.passwordSalt || !user.passwordHash
+      || !await passwordMatches(password, user.passwordSalt, user.passwordHash)) {
       throw Object.assign(new Error('Email or password is incorrect.'), { status: 401 });
     }
     if (!user.enabled) throw Object.assign(new Error('This account has been disabled. Contact an administrator.'), { status: 403 });
@@ -453,7 +528,8 @@ async function handle(request, response) {
 
 const server = createServer(async (request, response) => {
   const origin = request.headers.origin;
-  if (!origin || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+  const localDevelopmentOrigin = origin && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+  if (!origin || localDevelopmentOrigin || allowedOrigins.has(origin)) {
     response.setHeader('Access-Control-Allow-Origin', origin || 'http://localhost:5000');
     response.setHeader('Vary', 'Origin');
   } else {

@@ -134,6 +134,20 @@ export default function App() {
     navigate(result.role === 'admin' ? '/admin' : '/dashboard', { replace: true });
   };
 
+  const googleAuthenticated = async (credential, profile) => {
+    setSessionError('');
+    const result = await api.googleLogin({
+      credential,
+      ...(profile ? { profile } : {})
+    });
+    if (result.requiresProfile) return result;
+    sessionStorage.setItem('finerva-token', result.token);
+    setToken(result.token);
+    setAccount({ ...result.user, role: result.role });
+    navigate('/dashboard', { replace: true });
+    return result;
+  };
+
   const signOut = async () => {
     try {
       await api.logout(token);
@@ -173,7 +187,11 @@ export default function App() {
     }
     return location.pathname === '/admin/login'
       ? <AdminAuthPage startupError={sessionError} onAuthenticated={(credentials) => authenticated('admin', credentials)} />
-      : <UserAuthPage startupError={sessionError} onAuthenticated={(mode, credentials) => authenticated(mode, credentials)} />;
+      : <UserAuthPage
+        startupError={sessionError}
+        onAuthenticated={(mode, credentials) => authenticated(mode, credentials)}
+        onGoogleAuthenticated={googleAuthenticated}
+      />;
   }
 
   const renderCurrentTab = () => {
