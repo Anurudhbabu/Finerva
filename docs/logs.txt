@@ -898,3 +898,98 @@ Actions Taken:
 * Ran `npm run build`, `node --check`, workspace diagnostics, and isolated API smoke tests
 * Signed out in the browser and confirmed the Google configuration notice is visible without a client ID
 * Committed the implementation as 02515bda5b4b59c8ae7a94d1d879e65fd6121c04
+
+================================================================================
+[2026-10-06T05:30:32+05:30] SESSION START
+================================================================================
+Agent: Copilot
+Repo Root: C:\Users\anuru\Downloads\Finerva-main
+Branch: detached HEAD
+System Time: 2026-10-06T05:30:32+05:30
+Deadline: 2026-10-06T11:00:00+05:30
+
+================================================================================
+[2026-10-06T05:30:32+05:30] Configure Google Sign-In and Audit Security Controls
+================================================================================
+User Prompt (verbatim):
+1018545873935-smgcrp23g06h82lji92n7a4so6n4pf5k.apps.googleusercontent.com  this is the auth client id make sure the google auth is working and check if all the given security measures are working ehich are given below | Area | Practical action | What it protects against |
+|---|---|---|
+| 🔐 Authentication | Use strong password hashing such as **Argon2/bcrypt** | Password theft |
+| 🎟️ Sessions | Use short-lived access tokens + refresh tokens | Stolen session abuse |
+| 👤 Authorization | Enforce `user_id` ownership on **every API request** | One user accessing another user's finances |
+| 👑 Admin | Separate admin authentication and permissions | Unauthorized admin access |
+| 🗄️ Database | Encrypt sensitive data at rest | Database leaks |
+| 🔒 HTTPS | Force HTTPS/TLS in production | Password/data interception |
+| 🌐 CORS | Allow only your actual frontend domain | Unauthorized websites calling your API |
+| 🛡️ API | Add rate limiting to login/chat/API endpoints | Brute-force and API abuse |
+| 🤖 AI | Don't send unnecessary financial/PII data to external AI | Third-party data exposure |
+| 💬 Chat | Encrypt/protect stored `ChatLog` data | Exposure of private conversations |
+| 🔑 Secrets | Keep Gemini/Granite/API/database credentials in environment variables | Credential leakage |
+| 📁 Validation | Validate and sanitize every API input with Pydantic | Injection/malformed requests |
+| 🧾 Logging | Log security events, not sensitive financial values | Incident detection |
+| 🚨 Monitoring | Alert on repeated failed logins and suspicious API activity | Account takeover |
+| 💾 Backup | Encrypted, regular database backups | Data loss/ransomware |
+
+Agent Response:
+I’ll configure the provided public Google OAuth client ID for the local frontend and API, then verify that the Google sign-in control loads and inspect the full sign-in path. I’ll also audit each listed security measure against the actual implementation and report which are implemented, partial, or missing; I won’t treat a control as present unless the code enforces it.
+
+Agent Response Summary:
+Set up the supplied Google Web Client ID for the local app and verify Google sign-in. Independently inspect each requested security control and report evidence, limitations, and any high-priority gaps.
+
+Commit SHA:
+Pending verification and security audit.
+
+Files Modified / Created:
+* docs/logs.txt (Modified)
+
+Actions Taken:
+* Read AGENTS.md, confirmed onboarding agreement for this repository root, reviewed the architecture/recent log, and checked the local app process state
+* Started a bounded read-only security audit of the listed controls
+
+================================================================================
+[2026-10-06T05:32:00+05:30] Google Origin Check and Security Audit Results
+================================================================================
+User Prompt (verbatim):
+1018545873935-smgcrp23g06h82lji92n7a4so6n4pf5k.apps.googleusercontent.com  this is the auth client id make sure the google auth is working and check if all the given security measures are working ehich are given below | Area | Practical action | What it protects against |
+|---|---|---|
+| 🔐 Authentication | Use strong password hashing such as **Argon2/bcrypt** | Password theft |
+| 🎟️ Sessions | Use short-lived access tokens + refresh tokens | Stolen session abuse |
+| 👤 Authorization | Enforce `user_id` ownership on **every API request** | One user accessing another user's finances |
+| 👑 Admin | Separate admin authentication and permissions | Unauthorized admin access |
+| 🗄️ Database | Encrypt sensitive data at rest | Database leaks |
+| 🔒 HTTPS | Force HTTPS/TLS in production | Password/data interception |
+| 🌐 CORS | Allow only your actual frontend domain | Unauthorized websites calling your API |
+| 🛡️ API | Add rate limiting to login/chat/API endpoints | Brute-force and API abuse |
+| 🤖 AI | Don't send unnecessary financial/PII data to external AI | Third-party data exposure |
+| 💬 Chat | Encrypt/protect stored `ChatLog` data | Exposure of private conversations |
+| 🔑 Secrets | Keep Gemini/Granite/API/database credentials in environment variables | Credential leakage |
+| 📁 Validation | Validate and sanitize every API input with Pydantic | Injection/malformed requests |
+| 🧾 Logging | Log security events, not sensitive financial values | Incident detection |
+| 🚨 Monitoring | Alert on repeated failed logins and suspicious API activity | Account takeover |
+| 💾 Backup | Encrypted, regular database backups | Data loss/ransomware |
+
+Agent Response:
+Configured the supplied Google Web Client ID in the running local frontend and API process. The Google button and iframe load with that client ID, but Google Identity Services reports “The given origin is not allowed for the given client ID” for `http://localhost:5001`; therefore the OAuth sign-in cannot complete yet. Add `http://localhost:5001` under that client’s Authorized JavaScript origins in Google Cloud Console, then reload and retry. The running API rejects a fake Google ID token with a generic 401, as expected; no actual Google identity token or authenticated Google round trip was available before the origin was authorized.
+
+Security audit findings:
+1. HIGH — `src/backend/server.js` (13, 395-402, 549-552), `README.md` (117): a documented fallback administrator password remains active when `FINERVA_ADMIN_PASSWORD` is unset, while the API listens on all interfaces.
+2. HIGH — `src/backend/server.js` (1, 529-550), `src/backend/dev.js` (7-8): API and development web server use plaintext HTTP and bind to all interfaces; no TLS termination or HTTPS deployment configuration was found.
+3. MEDIUM — `src/backend/server.js` (44-51), `src/components/SecurityView.jsx` (17-30, 95): financial records and profile data are stored/exported as plaintext JSON rather than encrypted at rest.
+
+Checklist assessment: password hashing=scrypt implemented; sessions=partial (in-memory, no expiry); per-user ownership=implemented; admin separation=partial (roles enforced, default password weakens it); at-rest encryption=missing; HTTPS/TLS=missing; CORS=partial (exact deployment allowlist but any localhost origin is trusted); rate limiting=partial (in-memory sign-in/register limits, no chat/API-wide limits); AI minimization=implemented (local rule-based assistant, no external AI call); chat-log protection=implemented by non-persistence (chat remains client-side only); secrets=partial (.env is tracked, though inspected values were empty; admin fallback is hardcoded); input validation=implemented with Node validation, not Pydantic; security logging=partial (unexpected errors only, no structured security audit trail); monitoring/alerting=missing; encrypted backups=missing.
+
+Agent Response Summary:
+The provided OAuth client ID reaches Google Identity Services, but the local origin is not authorized in Google Cloud, so full Google authentication remains blocked pending an Authorized JavaScript origins update. The read-only audit found high-priority default-admin-credential and plaintext-transport issues, plus unencrypted financial storage; remaining controls and gaps are assessed above.
+
+Commit SHA:
+Pending log commit.
+
+Files Modified / Created:
+* docs/logs.txt (Modified)
+
+Actions Taken:
+* Restarted only the existing Finerva dev supervisor with `GOOGLE_CLIENT_ID` and `VITE_GOOGLE_CLIENT_ID` set to the provided client ID
+* Confirmed Vite and the API started, and the Google Identity Services iframe used the supplied client ID
+* Observed Google reject `http://localhost:5001` because it is not configured as an authorized origin for this OAuth client
+* Verified the configured backend rejects a malformed Google ID token with HTTP 401
+* Completed a read-only checklist audit of authentication, sessions, ownership, admin access, persistence, transport, CORS, rate limiting, AI/chat, secrets, validation, logging, monitoring, and backups
