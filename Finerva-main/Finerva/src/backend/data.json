@@ -1,0 +1,138 @@
+{
+  "users": [
+    {
+      "id": "ec09d2602585961f68ce23c1fbc75f1a",
+      "name": "Finerva Demo User",
+      "email": "demo-1791268084805@example.test",
+      "role": "user",
+      "enabled": true,
+      "createdAt": "2026-10-06T06:28:09.131Z",
+      "profile": {
+        "monthlyIncome": 4200,
+        "currentSavings": 8500,
+        "monthlyExpenses": 2100,
+        "savingsGoal": 600,
+        "debtBalance": 0,
+        "currency": "USD",
+        "occupation": "Student",
+        "riskPreference": "balanced"
+      },
+      "finance": {
+        "transactions": [],
+        "budgets": [],
+        "goals": [],
+        "subscriptions": []
+      },
+      "passwordSalt": "77c32eefc2d9558e34c86a0244d32155",
+      "passwordHash": "e3c24c99c8515e08939dabf18a2cf0fa6afc6dd97d38e4fb5d16bbc92706639bb21f60a8796eb2861fd5a601a4272337a27d0ef520f41819f2ea84b0603d84ec"
+    },
+    {
+      "id": "2f4a9baa86bb0d68b79bc544aa5dd94c",
+      "name": "Test User",
+      "email": "test_1791270138632@example.com",
+      "role": "user",
+      "enabled": true,
+      "createdAt": "2026-10-06T07:02:18.723Z",
+      "profile": {
+        "monthlyIncome": 5000,
+        "currentSavings": 1000,
+        "monthlyExpenses": 2000,
+        "savingsGoal": 500,
+        "debtBalance": 0,
+        "currency": "USD",
+        "occupation": "Tester",
+        "riskPreference": "conservative"
+      },
+      "finance": {
+        "transactions": [],
+        "budgets": [],
+        "goals": [],
+        "subscriptions": []
+      },
+      "passwordSalt": "fdb188cddf06e264cda8e6e2fab7522a",
+      "passwordHash": "ddabaa70e3a4853ffa4e1b256d0e6010f0a6aa24e276379b44486b4799668baa0b2d5017e9d8a2635ad1384544ecb49ca0a8d9862f4d1028eb1b0f0e5b07cd05"
+    },
+    {
+      "id": "e0c90a49d554e5ccc4e6ed9d02d19c08",
+      "name": "Finerva Demo User",
+      "email": "demo-1791270681972@example.test",
+      "role": "user",
+      "enabled": true,
+      "createdAt": "2026-10-06T07:11:24.332Z",
+      "profile": {
+        "monthlyIncome": 4200,
+        "currentSavings": 8500,
+        "monthlyExpenses": 2100,
+        "savingsGoal": 600,
+        "debtBalance": 0,
+        "currency": "USD",
+        "occupation": "Student",
+        "riskPreference": "balanced"
+      },
+      "finance": {
+        "transactions": [],
+        "budgets": [],
+        "goals": [],
+        "subscriptions": []
+      },
+      "passwordSalt": "2b7490439811259f47a5776e8c0553e2",
+      "passwordHash": "fb2f8e3b5e9de35ab983097012a95cef14f495913d0b38f2980e2cc4459811fc2c96be6397cf95db861d71048f374bf7775b370c65a4a7df87c038b70762ef7c"
+    },
+    {
+      "id": "fc5f675c1b6102793aa51afbc7fea94c",
+      "name": "Finerva Demo User",
+      "email": "demo-1791275702440@example.test",
+      "role": "user",
+      "enabled": true,
+      "createdAt": "2026-10-06T08:35:05.335Z",
+      "profile": {
+        "monthlyIncome": 4200,
+        "currentSavings": 8500,
+        "monthlyExpenses": 2100,
+        "savingsGoal": 600,
+        "debtBalance": 0,
+        "currency": "USD",
+        "occupation": "Student",
+        "riskPreference": "balanced"
+      },
+      "finance": {
+        "transactions": [],
+        "budgets": [],
+        "goals": [],
+        "subscriptions": []
+      },
+      "passwordSalt": "9f6613384eda7b4d3f0dbde7bf8ba7f6",
+      "passwordHash": "1f01b44d336ca35a43750f2275f1a78f51025c0b301af6c0a2e32ca1d89ba668a872c94a8c90a87ec71d7f9ee1f7f7497900bd53be69a4e27589a82118e782ce"
+    },
+    {
+      "id": "c90bb231b189311ef36adabad119c38c",
+      "name": "Finerva Demo User",
+      "email": "demo-1791277091208@example.test",
+      "role": "user",
+      "enabled": true,
+      "createdAt": "2026-10-06T08:58:13.603Z",
+      "profile": {
+        "monthlyIncome": 4200,
+        "currentSavings": 8500,
+        "monthlyExpenses": 2100,
+        "savingsGoal": 600,
+        "debtBalance": 0,
+        "currency": "USD",
+        "occupation": "Student",
+        "riskPreference": "balanced"
+      },
+      "finance": {
+        "transactions": [],
+        "budgets": [],
+        "goals": [],
+        "subscriptions": []
+      },
+      "passwordSalt": "9b02d6ed8edd8fa4be7aeca5b6682d38",
+      "passwordHash": "75c70a8312a292ef072dd37ae415805eb1b4bf6237553c8581993a4e023794a06c48cf96b8caba57e37be45b7cd6e2f688cc521632f32231c6a99575bedd6310"
+    }
+  ],
+  "settings": {
+    "maintenanceMode": false,
+    "aiAssistantEnabled": true
+  }
+}
