@@ -1036,6 +1036,30 @@ Actions Taken:
 * Determined that the production API endpoint is missing; a public persistent backend URL is required to complete the connection safely
 
 ================================================================================
+[2026-10-06T10:04:46+05:30] Confirm Supplied URL Is Frontend, Not API
+================================================================================
+User Prompt (verbatim):
+https://finerva-flax.vercel.app/
+
+Agent Response:
+Confirmed that `https://finerva-flax.vercel.app/` is the Finerva frontend: it serves the app HTML with HTTP 200, but `https://finerva-flax.vercel.app/api/health` returns HTTP 404. It is the same URL as the frontend already reporting `Request failed (404)`, not a separately deployed API service, so pointing API calls at it will not fix registration. To finish the integration, provide the actual deployed Node API base URL, or confirm that the backend has not been deployed. Do not put database or OAuth client secrets in the frontend URL/config.
+
+Agent Response Summary:
+Checked the supplied Vercel URL and its API health route. The page is the frontend only and has no deployed API handler; a separate public API URL is still required to resolve registration/login without relying on ephemeral serverless storage.
+
+Commit SHA:
+Pending activity-log commit.
+
+Files Modified / Created:
+* docs/logs.txt (Modified)
+
+Actions Taken:
+* Checked the repository's current onboarding agreement, team metadata, architecture notes, recent activity, and clean worktree
+* Confirmed `https://finerva-flax.vercel.app/` returns the frontend with HTTP 200
+* Confirmed `https://finerva-flax.vercel.app/api/health` returns HTTP 404
+* Determined the submitted URL is not a working API service base URL
+
+================================================================================
 [2026-10-06T09:55:58+05:30] Confirm and Commit Outstanding Changes
 ================================================================================
 User Prompt (verbatim):
