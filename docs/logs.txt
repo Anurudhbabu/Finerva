@@ -1001,6 +1001,41 @@ The completed Google-origin verification and security audit results were recorde
 e90a7b25bf97d5965a5e0ba5c4dc77c4f347001c
 
 ================================================================================
+[2026-10-06T09:57:42+05:30] SESSION START
+================================================================================
+Agent: Copilot
+Repo Root: C:\Users\anuru\Downloads\Finerva-main
+Branch: detached HEAD
+System Time: 2026-10-06T09:57:42+05:30
+Deadline: 2026-10-06T11:00:00+05:30
+
+================================================================================
+[2026-10-06T09:57:42+05:30] Diagnosing Deployed Registration 404
+================================================================================
+User Prompt (verbatim):
+rectify the error
+
+[User attached a screenshot of the deployed `finerva-flax.vercel.app` account-creation form displaying `Request failed (404)` after the form was submitted.]
+
+Agent Response:
+The deployed Vercel frontend is posting registration to `/api/auth/register`, but that deployment responds HTTP 404. The repository has a local Node API and a Vite development proxy, but no Vercel API function or configured production API host. I confirmed the 404 with a safe invalid test request; the existing local backend is a separate service and cannot handle requests made to the public Vercel domain. To connect the deployed frontend without using ephemeral serverless storage for user finances/sessions, I need the public URL where the persistent Finerva Node API is hosted (or confirmation it has not been deployed yet).
+
+Agent Response Summary:
+Diagnosed the screenshot as the Vercel static frontend having no `/api/auth/register` production route; the request currently returns HTTP 404. The local Node API exists, but no public backend URL is configured, so connecting this production app requires the persistent API hosting URL.
+
+Commit SHA:
+Pending activity-log commit.
+
+Files Modified / Created:
+* docs/logs.txt (Modified)
+
+Actions Taken:
+* Re-read AGENTS.md and checked current repo context, onboarding agreement, team metadata, latest activity log, and clean Git state
+* Inspected Vite/API configuration and confirmed there is no Vercel API function or deployment target in the repository
+* Sent a non-sensitive invalid registration request to the deployed URL and confirmed HTTP 404
+* Determined that the production API endpoint is missing; a public persistent backend URL is required to complete the connection safely
+
+================================================================================
 [2026-10-06T09:55:58+05:30] Confirm and Commit Outstanding Changes
 ================================================================================
 User Prompt (verbatim):
