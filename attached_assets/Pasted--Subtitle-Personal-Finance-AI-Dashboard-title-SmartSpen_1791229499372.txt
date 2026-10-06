@@ -1,0 +1,185 @@
+ Subtitle: Personal Finance AI
+- Dashboard title: SmartSpends-AI
+- Hero message: "Your Intelligent Money Companion powered by Google Gemini 1.5 Flash with Granite AI fallback for reliable, personalized financial guidance."
+- Tagline: "Plan smarter. Spend better. Save faster."
+- Welcome text: "Welcome back, {profile.userName || user?.username}! Here's your financial overview"
+- Section title: "Financial Health Score"
+- Section title: "Your Financial Dashboard"
+- Section title: "Smart Features for Smarter Money"
+- Section title: "Why Choose SMARTSPENDS?"
+- CTA: "🚀 Get Started"
+- CTA: "🎯 Start with SmartSpends"
+
+Design direction:
+- Premium fintech aesthetic
+- Soft gradients and modern glassy cards
+- Rounded corners and large white cards on dark navy backgrounds
+- Big hero header with gradient background and strong modern typography
+- Color palette: blue, green, purple, red, yellow accents
+- Spacious layout with excellent hierarchy
+- Hover animations, card lifts, and gradient glow effects
+- Responsive and clean dashboard layout
+- High-end financial SaaS look
+
+Frontend UI/UX personality and time-of-day experience:
+- Morning mode: bright, optimistic, energetic visuals with fresh blue-green gradients and confidence-building financial messaging.
+- Afternoon mode: balanced, productive, and focused palette with strong analytics, steady card contrast, and practical money-planning emphasis.
+- Evening mode: richer, darker premium theme with deeper navy backgrounds, softer ambient glows, and a reflective, calm dashboard mood for planning and review.
+- Night mode / low-light feel: dimmed backgrounds, subtle shadows, cooler accent colors, and a more premium, private finance-assistant feel.
+- The interface should not feel static; it should subtly adapt its mood and accent intensity based on time-of-day context while keeping the same SmartSpends brand identity.
+- Use warm, upbeat tones in the morning and early-day hero sections; keep dashboard cards clear and readable throughout the day; use deeper gradients and softer glows at night for a premium, calm experience.
+- Even if time-of-day logic is not fully implemented, the visual mood should clearly suggest morning, afternoon, evening, and night distinctions in the landing page and dashboard styling.
+
+Core pages to build:
+1. Landing page
+2. Login page
+3. Dashboard page
+4. Chat page
+5. Budget page
+6. Subscriptions page
+7. Bill split page
+8. Goals page
+9. Insights page
+10. Student offers page
+11. Edit profile page
+12. Stock market page
+13. Watchlist page
+14. Admin dashboard
+
+Required routes:
+- /
+- /login
+- /dashboard
+- /chat
+- /budgets
+- /subscriptions
+- /bill-split
+- /goals
+- /insights
+- /student-offers
+- /edit-profile
+- /market
+- /watchlist
+- /admin
+
+The app must support:
+- protected routes
+- admin-only route
+- login flow
+- dashboard financial metrics
+- AI chat card
+- quick actions panel
+- profile context and mock auth state
+
+Landing page exact content:
+Hero:
+- SMARTSPENDS
+- Personal Finance AI
+- Your Intelligent Money Companion powered by Google Gemini 1.5 Flash with Granite AI fallback for reliable, personalized financial guidance.
+- Three stat pills: AI, 24/7, 100%
+- Button: "🚀 Get Started"
+
+Features list:
+- Budget Analysis
+- Smart Spending Insights
+- Goal-Based Planning
+- Investment Guidance
+- Debt Management
+- Dual AI System
+
+Descriptions:
+- "Intelligent budget tracking with personalized insights and spending pattern analysis"
+- "AI-powered recommendations to optimize your spending and find savings opportunities"
+- "Set and track financial goals with step-by-step guidance tailored to your timeline"
+- "Student-friendly investment advice with risk-appropriate recommendations"
+- "Strategic debt repayment plans and credit building advice for students"
+- "Google Gemini for advanced insights, Granite for reliable fallback responses"
+
+Why choose cards:
+- Data Security First
+- AI-Powered Precision
+- Built for Students
+- Always Improving
+
+Descriptions:
+- "Your financial data is protected with enterprise-grade security and privacy measures"
+- "Cutting-edge AI technology provides accurate, contextual financial advice"
+- "Designed specifically for student financial challenges and opportunities"
+- "Continuous learning AI that gets better at helping you over time"
+
+Bottom CTA:
+- "Plan smarter. Spend better. Save faster."
+- "Join thousands of students who are already taking control of their financial future with AI-powered guidance."
+- Button: "🎯 Start with SmartSpends"
+
+Footer:
+- About
+- Privacy Policy
+- Contact
+- © 2025 Finerva. All rights reserved.
+
+Dashboard page exact content and layout:
+- Header gradient with title SmartSpends-AI
+- Subtitle: "Your Intelligent Money Companion"
+- Top-right buttons: Admin and Logout
+- Financial summary box with large headline Financial Health Score
+- Summary values:
+  - Net Worth
+  - Monthly Surplus
+  - Health Score
+- Four metric cards with large values and labels:
+  - Current Balance
+  - Monthly Spending
+  - Savings Goal
+  - Investments
+- Green balance card, red spending card, blue savings card, purple investments card
+- AI assistant card with:
+  - "🤖 SmartSpends AI"
+  - "LOCAL AI"
+  - "Get instant personalized financial advice • Investing • Saving • Taxes • Budgeting"
+- Quick action buttons:
+  - 💬 AI Chat
+  - 📊 Budgets
+  - 💳 Subscriptions
+  - 🤝 Bill Split
+  - 📈 Stock Market
+  - ✏️ Edit Profile
+- More features section with:
+  - 🎯 Goals
+  - 💡 Insights
+  - 🎓 Student Offers
+  - ⭐ Watchlist
+
+Dashboard formulas to use for data:
+- netWorth = profile.currentBalance + profile.investments
+- monthlySurplus = profile.userIncome - profile.monthlySpending
+- spendingPct = profile.userIncome > 0 ? (profile.monthlySpending / profile.userIncome * 100) : 0
+- currentSavings = profile.currentBalance - profile.monthlySpending
+- savingsProgress = profile.savingsGoal > 0 ? (currentSavings / profile.savingsGoal * 100) : 0
+
+Suggested mock data:
+- currentBalance: 54000
+- userIncome: 120000
+- monthlySpending: 36000
+- investments: 180000
+- savingsGoal: 150000
+- userName: "Aarav"
+
+CSS/styling requirements:
+- Use a dark luxury fintech background for many sections
+- Use gradient hero header with a curved bottom radius and glow effect
+- Use animated hover on cards and buttons
+- Use strong border radius and large padding
+- Use custom classes like main-header, feature-card, dashboard-card, financial-summary, btn-primary, btn-action
+- Use gradient text for important headings
+- Add progress bars with bright accent colors
+- Use a premium SaaS interface instead of generic and simplistic UI
+
+Project structure:
+- Use Vite + React app
+- Use React Router
+- Use context providers for auth and profile
+- Use Tailwind CSS for layout and utility classes
+- Use some inline styles or custom CSS to match the original aesthetic
+
+Important: make it visually close to the original reference, not a generic template
