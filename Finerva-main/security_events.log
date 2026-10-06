@@ -1,0 +1,128 @@
+2026-10-06 03:39:12,741 [SECURITY] {"timestamp": "2026-10-05T22:09:12.741165+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:12,784 [SECURITY] {"timestamp": "2026-10-05T22:09:12.784889+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:12,842 [SECURITY] {"timestamp": "2026-10-05T22:09:12.842875+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:12,892 [SECURITY] {"timestamp": "2026-10-05T22:09:12.892060+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:12,899 [SECURITY] {"timestamp": "2026-10-05T22:09:12.899776+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:12,928 [SECURITY] {"timestamp": "2026-10-05T22:09:12.928222+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:12,973 [SECURITY] {"timestamp": "2026-10-05T22:09:12.973020+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:13,005 [SECURITY] {"timestamp": "2026-10-05T22:09:13.005364+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:13,020 [SECURITY] {"timestamp": "2026-10-05T22:09:13.020680+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:13,052 [SECURITY] {"timestamp": "2026-10-05T22:09:13.052369+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:13,059 [SECURITY] {"timestamp": "2026-10-05T22:09:13.059291+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:13,091 [SECURITY] {"timestamp": "2026-10-05T22:09:13.091429+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:13,121 [SECURITY] {"timestamp": "2026-10-05T22:09:13.121923+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:13,152 [SECURITY] {"timestamp": "2026-10-05T22:09:13.152830+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:13,184 [SECURITY] {"timestamp": "2026-10-05T22:09:13.184054+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:13,301 [SECURITY] {"timestamp": "2026-10-05T22:09:13.301204+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:13,323 [SECURITY] {"timestamp": "2026-10-05T22:09:13.323603+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:13,354 [SECURITY] {"timestamp": "2026-10-05T22:09:13.354914+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:13,387 [SECURITY] {"timestamp": "2026-10-05T22:09:13.387680+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:13,405 [SECURITY] {"timestamp": "2026-10-05T22:09:13.405153+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:39:13,475 [SECURITY] {"timestamp": "2026-10-05T22:09:13.475776+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:41:42,543 [SECURITY] {"timestamp": "2026-10-05T22:11:42.543001+00:00", "event": "REGISTER_SUCCESS", "user_id": 1, "email": "n***@test.com", "ip": "testclient"}
+2026-10-06 03:44:27,381 [SECURITY] {"timestamp": "2026-10-05T22:14:27.381575+00:00", "event": "REGISTER_SUCCESS", "user_id": 1, "email": "x***@test.com", "ip": "testclient"}
+2026-10-06 03:44:44,795 [SECURITY] {"timestamp": "2026-10-05T22:14:44.795430+00:00", "event": "REGISTER_SUCCESS", "user_id": 1, "email": "n***@test.com", "ip": "testclient"}
+2026-10-06 03:44:45,220 [SECURITY] {"timestamp": "2026-10-05T22:14:45.220524+00:00", "event": "REGISTER_SUCCESS", "user_id": 2, "email": "n***@test.com", "ip": "testclient"}
+2026-10-06 03:44:45,452 [SECURITY] {"timestamp": "2026-10-05T22:14:45.452054+00:00", "event": "REGISTER_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:44:45,677 [SECURITY] {"timestamp": "2026-10-05T22:14:45.677912+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:44:45,898 [SECURITY] {"timestamp": "2026-10-05T22:14:45.898238+00:00", "event": "LOGIN_FAILURE", "email": "u***@test.com", "reason": "wrong_password", "ip": "testclient"}
+2026-10-06 03:44:46,118 [SECURITY] {"timestamp": "2026-10-05T22:14:46.118108+00:00", "event": "LOGIN_FAILURE", "email": "d***@test.com", "reason": "user_not_found_or_inactive", "ip": "testclient"}
+2026-10-06 03:44:46,127 [SECURITY] {"timestamp": "2026-10-05T22:14:46.127521+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,358 [SECURITY] {"timestamp": "2026-10-05T22:14:46.358292+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:44:46,364 [SECURITY] {"timestamp": "2026-10-05T22:14:46.364170+00:00", "event": "LOGOUT", "user_id": 3, "ip": "testclient"}
+2026-10-06 03:44:46,592 [SECURITY] {"timestamp": "2026-10-05T22:14:46.592655+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:44:46,601 [SECURITY] {"timestamp": "2026-10-05T22:14:46.601047+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,618 [SECURITY] {"timestamp": "2026-10-05T22:14:46.618319+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,619 [SECURITY] {"timestamp": "2026-10-05T22:14:46.619727+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,634 [SECURITY] {"timestamp": "2026-10-05T22:14:46.634121+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,652 [SECURITY] {"timestamp": "2026-10-05T22:14:46.652718+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,667 [SECURITY] {"timestamp": "2026-10-05T22:14:46.667793+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,677 [SECURITY] {"timestamp": "2026-10-05T22:14:46.677280+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,684 [SECURITY] {"timestamp": "2026-10-05T22:14:46.684950+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,686 [SECURITY] {"timestamp": "2026-10-05T22:14:46.686477+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,701 [SECURITY] {"timestamp": "2026-10-05T22:14:46.701617+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,718 [SECURITY] {"timestamp": "2026-10-05T22:14:46.718615+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,733 [SECURITY] {"timestamp": "2026-10-05T22:14:46.733726+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,748 [SECURITY] {"timestamp": "2026-10-05T22:14:46.748834+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,774 [SECURITY] {"timestamp": "2026-10-05T22:14:46.774893+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,782 [SECURITY] {"timestamp": "2026-10-05T22:14:46.782439+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,798 [SECURITY] {"timestamp": "2026-10-05T22:14:46.798083+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,812 [SECURITY] {"timestamp": "2026-10-05T22:14:46.812778+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,822 [SECURITY] {"timestamp": "2026-10-05T22:14:46.822901+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:44:46,836 [SECURITY] {"timestamp": "2026-10-05T22:14:46.836751+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:45:44,214 [SECURITY] {"timestamp": "2026-10-05T22:15:44.214486+00:00", "event": "REGISTER_SUCCESS", "user_id": 1, "email": "n***@test.com", "ip": "testclient"}
+2026-10-06 03:45:44,638 [SECURITY] {"timestamp": "2026-10-05T22:15:44.638833+00:00", "event": "REGISTER_SUCCESS", "user_id": 2, "email": "n***@test.com", "ip": "testclient"}
+2026-10-06 03:45:44,870 [SECURITY] {"timestamp": "2026-10-05T22:15:44.870310+00:00", "event": "REGISTER_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:45,097 [SECURITY] {"timestamp": "2026-10-05T22:15:45.097810+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:45,313 [SECURITY] {"timestamp": "2026-10-05T22:15:45.313855+00:00", "event": "LOGIN_FAILURE", "email": "u***@test.com", "reason": "wrong_password", "ip": "testclient"}
+2026-10-06 03:45:45,531 [SECURITY] {"timestamp": "2026-10-05T22:15:45.531476+00:00", "event": "LOGIN_FAILURE", "email": "d***@test.com", "reason": "user_not_found_or_inactive", "ip": "testclient"}
+2026-10-06 03:45:45,540 [SECURITY] {"timestamp": "2026-10-05T22:15:45.539991+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:45:45,767 [SECURITY] {"timestamp": "2026-10-05T22:15:45.767890+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:45,772 [SECURITY] {"timestamp": "2026-10-05T22:15:45.772568+00:00", "event": "LOGOUT", "user_id": 3, "ip": "testclient"}
+2026-10-06 03:45:46,004 [SECURITY] {"timestamp": "2026-10-05T22:15:46.004280+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:46,233 [SECURITY] {"timestamp": "2026-10-05T22:15:46.233239+00:00", "event": "REGISTER_SUCCESS", "user_id": 4, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:46,254 [SECURITY] {"timestamp": "2026-10-05T22:15:46.254727+00:00", "event": "IDOR_ATTEMPT", "user_id": 3, "target_resource": "Transaction", "target_id": "1", "ip": null}
+2026-10-06 03:45:46,486 [SECURITY] {"timestamp": "2026-10-05T22:15:46.486088+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:46,714 [SECURITY] {"timestamp": "2026-10-05T22:15:46.714532+00:00", "event": "LOGIN_SUCCESS", "user_id": 4, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:46,956 [SECURITY] {"timestamp": "2026-10-05T22:15:46.956546+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:47,194 [SECURITY] {"timestamp": "2026-10-05T22:15:47.194311+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:47,421 [SECURITY] {"timestamp": "2026-10-05T22:15:47.421717+00:00", "event": "LOGIN_SUCCESS", "user_id": 4, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:47,438 [SECURITY] {"timestamp": "2026-10-05T22:15:47.438346+00:00", "event": "IDOR_ATTEMPT", "user_id": 4, "target_resource": "Budget", "target_id": "1", "ip": null}
+2026-10-06 03:45:47,670 [SECURITY] {"timestamp": "2026-10-05T22:15:47.670392+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:47,674 [SECURITY] {"timestamp": "2026-10-05T22:15:47.674932+00:00", "event": "ADMIN_ACCESS_DENIED", "user_id": 3, "endpoint": "admin_endpoint", "ip": null}
+2026-10-06 03:45:47,678 [SECURITY] {"timestamp": "2026-10-05T22:15:47.678354+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:45:47,907 [SECURITY] {"timestamp": "2026-10-05T22:15:47.907118+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:48,147 [SECURITY] {"timestamp": "2026-10-05T22:15:48.147714+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:48,376 [SECURITY] {"timestamp": "2026-10-05T22:15:48.376343+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:48,610 [SECURITY] {"timestamp": "2026-10-05T22:15:48.609963+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:48,845 [SECURITY] {"timestamp": "2026-10-05T22:15:48.845838+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:49,079 [SECURITY] {"timestamp": "2026-10-05T22:15:49.079337+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:49,311 [SECURITY] {"timestamp": "2026-10-05T22:15:49.311393+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:49,540 [SECURITY] {"timestamp": "2026-10-05T22:15:49.540053+00:00", "event": "LOGIN_SUCCESS", "user_id": 4, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:49,781 [SECURITY] {"timestamp": "2026-10-05T22:15:49.781190+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:49,786 [SECURITY] {"timestamp": "2026-10-05T22:15:49.786711+00:00", "event": "AI_REQUEST", "user_id": 3, "engine": "rule_based", "prompt_length": 37}
+2026-10-06 03:45:50,029 [SECURITY] {"timestamp": "2026-10-05T22:15:50.028965+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:50,034 [SECURITY] {"timestamp": "2026-10-05T22:15:50.034317+00:00", "event": "AI_REQUEST", "user_id": 3, "engine": "rule_based", "prompt_length": 28}
+2026-10-06 03:45:50,273 [SECURITY] {"timestamp": "2026-10-05T22:15:50.273252+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:45:50,279 [SECURITY] {"timestamp": "2026-10-05T22:15:50.279007+00:00", "event": "SUSPICIOUS_ACTIVITY", "description": "Potential prompt injection detected", "user_id": 3, "ip": null}
+2026-10-06 03:45:50,279 [SECURITY] {"timestamp": "2026-10-05T22:15:50.279231+00:00", "event": "AI_REQUEST", "user_id": 3, "engine": "rule_based", "prompt_length": 40}
+2026-10-06 03:45:50,289 [SECURITY] {"timestamp": "2026-10-05T22:15:50.289692+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:45:50,527 [SECURITY] {"timestamp": "2026-10-05T22:15:50.527286+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:18,885 [SECURITY] {"timestamp": "2026-10-05T22:16:18.885353+00:00", "event": "REGISTER_SUCCESS", "user_id": 1, "email": "n***@test.com", "ip": "testclient"}
+2026-10-06 03:46:19,125 [SECURITY] {"timestamp": "2026-10-05T22:16:19.125663+00:00", "event": "REGISTER_SUCCESS", "user_id": 2, "email": "n***@test.com", "ip": "testclient"}
+2026-10-06 03:46:19,352 [SECURITY] {"timestamp": "2026-10-05T22:16:19.352193+00:00", "event": "REGISTER_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:19,587 [SECURITY] {"timestamp": "2026-10-05T22:16:19.587136+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:19,805 [SECURITY] {"timestamp": "2026-10-05T22:16:19.805653+00:00", "event": "LOGIN_FAILURE", "email": "u***@test.com", "reason": "wrong_password", "ip": "testclient"}
+2026-10-06 03:46:20,022 [SECURITY] {"timestamp": "2026-10-05T22:16:20.022680+00:00", "event": "LOGIN_FAILURE", "email": "d***@test.com", "reason": "user_not_found_or_inactive", "ip": "testclient"}
+2026-10-06 03:46:20,032 [SECURITY] {"timestamp": "2026-10-05T22:16:20.032609+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:46:20,256 [SECURITY] {"timestamp": "2026-10-05T22:16:20.256468+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:20,262 [SECURITY] {"timestamp": "2026-10-05T22:16:20.262366+00:00", "event": "LOGOUT", "user_id": 3, "ip": "testclient"}
+2026-10-06 03:46:20,494 [SECURITY] {"timestamp": "2026-10-05T22:16:20.494170+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:20,725 [SECURITY] {"timestamp": "2026-10-05T22:16:20.725138+00:00", "event": "REGISTER_SUCCESS", "user_id": 4, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:20,743 [SECURITY] {"timestamp": "2026-10-05T22:16:20.743392+00:00", "event": "IDOR_ATTEMPT", "user_id": 3, "target_resource": "Transaction", "target_id": "1", "ip": null}
+2026-10-06 03:46:20,972 [SECURITY] {"timestamp": "2026-10-05T22:16:20.972058+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:21,202 [SECURITY] {"timestamp": "2026-10-05T22:16:21.202461+00:00", "event": "LOGIN_SUCCESS", "user_id": 4, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:21,443 [SECURITY] {"timestamp": "2026-10-05T22:16:21.443424+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:21,681 [SECURITY] {"timestamp": "2026-10-05T22:16:21.681128+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:21,914 [SECURITY] {"timestamp": "2026-10-05T22:16:21.914637+00:00", "event": "LOGIN_SUCCESS", "user_id": 4, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:21,931 [SECURITY] {"timestamp": "2026-10-05T22:16:21.931830+00:00", "event": "IDOR_ATTEMPT", "user_id": 4, "target_resource": "Budget", "target_id": "1", "ip": null}
+2026-10-06 03:46:22,159 [SECURITY] {"timestamp": "2026-10-05T22:16:22.159228+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:22,163 [SECURITY] {"timestamp": "2026-10-05T22:16:22.163797+00:00", "event": "ADMIN_ACCESS_DENIED", "user_id": 3, "endpoint": "admin_endpoint", "ip": null}
+2026-10-06 03:46:22,166 [SECURITY] {"timestamp": "2026-10-05T22:16:22.166893+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:46:22,394 [SECURITY] {"timestamp": "2026-10-05T22:16:22.394339+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:22,629 [SECURITY] {"timestamp": "2026-10-05T22:16:22.628971+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:22,861 [SECURITY] {"timestamp": "2026-10-05T22:16:22.861507+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:23,091 [SECURITY] {"timestamp": "2026-10-05T22:16:23.091849+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:23,323 [SECURITY] {"timestamp": "2026-10-05T22:16:23.323180+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:23,558 [SECURITY] {"timestamp": "2026-10-05T22:16:23.558386+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:23,792 [SECURITY] {"timestamp": "2026-10-05T22:16:23.792912+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:24,023 [SECURITY] {"timestamp": "2026-10-05T22:16:24.023924+00:00", "event": "LOGIN_SUCCESS", "user_id": 4, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:24,269 [SECURITY] {"timestamp": "2026-10-05T22:16:24.268973+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:24,274 [SECURITY] {"timestamp": "2026-10-05T22:16:24.274483+00:00", "event": "AI_REQUEST", "user_id": 3, "engine": "rule_based", "prompt_length": 37}
+2026-10-06 03:46:24,514 [SECURITY] {"timestamp": "2026-10-05T22:16:24.514205+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:24,519 [SECURITY] {"timestamp": "2026-10-05T22:16:24.519443+00:00", "event": "AI_REQUEST", "user_id": 3, "engine": "rule_based", "prompt_length": 28}
+2026-10-06 03:46:24,754 [SECURITY] {"timestamp": "2026-10-05T22:16:24.754457+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
+2026-10-06 03:46:24,761 [SECURITY] {"timestamp": "2026-10-05T22:16:24.761177+00:00", "event": "SUSPICIOUS_ACTIVITY", "description": "Potential prompt injection detected", "user_id": 3, "ip": null}
+2026-10-06 03:46:24,761 [SECURITY] {"timestamp": "2026-10-05T22:16:24.761398+00:00", "event": "AI_REQUEST", "user_id": 3, "engine": "rule_based", "prompt_length": 40}
+2026-10-06 03:46:24,772 [SECURITY] {"timestamp": "2026-10-05T22:16:24.772648+00:00", "event": "TOKEN_INVALID", "reason": "no_token_provided", "ip": null}
+2026-10-06 03:46:25,011 [SECURITY] {"timestamp": "2026-10-05T22:16:25.011112+00:00", "event": "LOGIN_SUCCESS", "user_id": 3, "email": "u***@test.com", "ip": "testclient"}
